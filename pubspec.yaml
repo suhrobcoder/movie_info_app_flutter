@@ -28,14 +28,13 @@ flutter:
   # assets:
   #   - assets/images
 
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
+  fonts:
+    - family: SFPro
+      fonts:
+        - asset: assets\font\sf_pro_regular.ttf
+        - asset: assets\font\sf_pro_medium.ttf
+          weight: 500
+        - asset: assets\font\sf_pro_semibold.ttf
+          weight: 600
+        - asset: assets\font\sf_pro_bold.ttf
+          weight: 700
