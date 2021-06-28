@@ -12,6 +12,8 @@ dependencies:
   flutter:
     sdk: flutter
   dio: ^4.0.0
+  path_provider: ^2.0.2
+  sqflite: ^2.0.0+3
 
   cupertino_icons: ^1.0.2
 
@@ -22,8 +24,8 @@ dev_dependencies:
 flutter:
   uses-material-design: true
 
-  assets:
-    - assets/images
+  # assets:
+  #   - assets/images
 
   # fonts:
   #   - family: Schyler
