@@ -17,6 +17,8 @@ dependencies:
   path_provider: ^2.0.2
   flutter_bloc: ^7.0.1
   cupertino_icons: ^1.0.2
+  cached_network_image: ^3.0.0
+  shimmer: ^2.0.0
 
 dev_dependencies:
   flutter_test:
@@ -25,8 +27,8 @@ dev_dependencies:
 flutter:
   uses-material-design: true
 
-  # assets:
-  #   - assets/images
+  assets:
+    - assets/images/
 
   fonts:
     - family: SFPro

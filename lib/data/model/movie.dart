@@ -40,6 +40,14 @@ class Movie {
         releaseDate = json["release_date"],
         runtime = json["runtime"],
         video = json["video"],
-        voteAverage = json["voteAverage"],
-        voteCount = json["voteCount"];
+        voteAverage = json["vote_average"] + 0.0,
+        voteCount = json["vote_count"];
+
+  String getPosterUrl() {
+    return "https://image.tmdb.org/t/p/w500/$posterPath";
+  }
+
+  String getBackdropUrl() {
+    return "https://image.tmdb.org/t/p/w500/$backdropPath";
+  }
 }

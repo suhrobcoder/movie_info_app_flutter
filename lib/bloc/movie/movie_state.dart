@@ -5,13 +5,14 @@ abstract class MovieState {
   final List<Movie> movies;
   final MovieCategory category;
   final int page;
+  final bool loading;
 
-  MovieState(this.movies, this.category, this.page);
+  MovieState(this.movies, this.category, this.page, {this.loading: false});
 }
 
 class MovieLoadingState extends MovieState {
   MovieLoadingState(List<Movie> movies, MovieCategory category, int page)
-      : super(movies, category, page);
+      : super(movies, category, page, loading: true);
 }
 
 class MovieLoadedState extends MovieState {

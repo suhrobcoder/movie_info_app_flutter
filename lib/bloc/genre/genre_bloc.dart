@@ -22,8 +22,8 @@ class GenreBloc extends Bloc<GenreEvent, GenreState> {
       yield GenreInitial();
       var genreResponse = await repository.getGenres();
       if (genreResponse.error.isEmpty) {
-        var genres = genreResponse.genres;
-        genres.add(defaultGenre);
+        var genres = [defaultGenre];
+        genres.addAll(genreResponse.genres);
         yield GenresLoaded(defaultGenre, genres);
       } else {
         yield GenresLoadError(genreResponse.error);

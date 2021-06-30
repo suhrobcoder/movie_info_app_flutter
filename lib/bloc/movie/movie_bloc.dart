@@ -18,9 +18,10 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
   Stream<MovieState> mapEventToState(
     MovieEvent event,
   ) async* {
+    print("Event : ${state.toString}");
     if (event is LoadMoviesEvent) {
       yield MovieLoadingState(state.movies, state.category, state.page);
-      MovieListResponse res = await repository.getPopularMovies(state.page + 1);
+      MovieListResponse res = await loadMovies(state.page + 1);
       if (res.error.isEmpty) {
         var movies = state.movies;
         movies.addAll(res.results);
@@ -32,7 +33,7 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
     }
     if (event is RefreshEvent) {
       yield MovieLoadingState([], state.category, 0);
-      MovieListResponse res = await repository.getPopularMovies(1);
+      MovieListResponse res = await loadMovies(1);
       if (res.error.isEmpty) {
         var movies = res.results;
         yield MovieLoadedState(movies, state.category, 1);
@@ -41,14 +42,25 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
       }
     }
     if (event is CategorySelectEvent) {
-      yield MovieLoadedState([], event.category, 0);
-      MovieListResponse res = await repository.getPopularMovies(1);
+      yield MovieLoadingState([], event.category, 0);
+      MovieListResponse res = await loadMovies(1);
       if (res.error.isEmpty) {
         var movies = res.results;
         yield MovieLoadedState(movies, event.category, 1);
       } else {
         yield MovieLoadErrorState([], event.category, 0, res.error);
       }
+    }
+  }
+
+  Future<MovieListResponse> loadMovies(int page) async {
+    switch (state.category) {
+      case MovieCategory.POPULAR:
+        return await repository.getPopularMovies(page);
+      case MovieCategory.TOP_RATED:
+        return await repository.getTopRatedMovies(page);
+      case MovieCategory.UPCOMING:
+        return await repository.getUpcomingMovies(page);
     }
   }
 }
