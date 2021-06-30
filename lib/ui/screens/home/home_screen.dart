@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_info_app_flutter/bloc/genre/genre_bloc.dart';
 import 'package:movie_info_app_flutter/bloc/movie/movie_bloc.dart';
 import 'package:movie_info_app_flutter/data/repository/movie_repository.dart';
+import 'package:movie_info_app_flutter/ui/screens/search/search_screen.dart';
 
 import 'category_row.dart';
 import 'genre_row.dart';
@@ -24,7 +25,7 @@ class HomeScreen extends StatelessWidget {
       ],
       child: Container(
         child: Scaffold(
-          appBar: buildAppBar(),
+          appBar: buildAppBar(context),
           drawer: Drawer(
             child: ListView(
               children: [
@@ -48,7 +49,8 @@ class HomeScreen extends StatelessWidget {
                 ListTile(
                   leading: Icon(Icons.search),
                   title: Text("Search"),
-                  onTap: () {},
+                  onTap: () => Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => SearchScreen())),
                 ),
                 ListTile(
                   leading: Icon(Icons.favorite),
@@ -111,7 +113,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  AppBar buildAppBar() {
+  AppBar buildAppBar(BuildContext context) {
     return AppBar(
       title: Text("Movie Info App"),
       leading: Builder(builder: (context) {
@@ -120,7 +122,10 @@ class HomeScreen extends StatelessWidget {
             icon: Icon(Icons.menu));
       }),
       actions: [
-        IconButton(onPressed: () {}, icon: Icon(Icons.search)),
+        IconButton(
+            onPressed: () => Navigator.push(context,
+                MaterialPageRoute(builder: (context) => SearchScreen())),
+            icon: Icon(Icons.search)),
       ],
     );
   }

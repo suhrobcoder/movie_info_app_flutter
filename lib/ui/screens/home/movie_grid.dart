@@ -111,6 +111,10 @@ class MovieItem extends StatelessWidget {
                 "assets/images/poster_placeholder.jpg",
                 width: 200,
               ),
+              errorWidget: (context, str, _) => Image.asset(
+                "assets/images/poster_placeholder.jpg",
+                width: 200,
+              ),
             ),
           ),
           SizedBox(height: 4),
