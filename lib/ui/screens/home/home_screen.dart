@@ -6,6 +6,7 @@ import 'package:movie_info_app_flutter/bloc/movie/movie_bloc.dart';
 import 'package:movie_info_app_flutter/data/repository/movie_repository.dart';
 import 'package:movie_info_app_flutter/data/repository/saved_movies_repository.dart';
 import 'package:movie_info_app_flutter/ui/screens/details/details_screen.dart';
+import 'package:movie_info_app_flutter/ui/screens/favorites/favorites_screen.dart';
 import 'package:movie_info_app_flutter/ui/screens/search/search_screen.dart';
 
 import 'category_row.dart';
@@ -58,7 +59,10 @@ class HomeScreen extends StatelessWidget {
                 ListTile(
                   leading: Icon(Icons.favorite),
                   title: Text("Favorites"),
-                  onTap: () {},
+                  onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => FavoritesScreen())),
                 )
               ],
             ),
@@ -107,8 +111,8 @@ class HomeScreen extends StatelessWidget {
                     (movie) {
                       return DetailsScreen(movie, repository, savedRepository);
                     },
-                    () => bloc.add(RefreshEvent()),
-                    () => bloc.add(LoadMoviesEvent()),
+                    onRefresh: () => bloc.add(RefreshEvent()),
+                    onLoadMore: () => bloc.add(LoadMoviesEvent()),
                     loading: loading,
                     error: error,
                     retry: () => bloc.add(LoadMoviesEvent()),

@@ -8,15 +8,23 @@ import 'package:movie_info_app_flutter/ui/components/loading_widget.dart';
 class MovieGrid extends StatelessWidget {
   final List<Movie> movies;
   final Widget Function(Movie) openBuilder;
-  final Function onRefresh;
-  final Function onLoadMore;
+  final Function? onRefresh;
+  final Function? onLoadMore;
   final bool? loading;
   final String? error;
   final Function? retry;
+  final Function? onClosed;
   const MovieGrid(
-      this.movies, this.openBuilder, this.onRefresh, this.onLoadMore,
-      {this.loading, this.error, Key? key, this.retry})
-      : super(key: key);
+    this.movies,
+    this.openBuilder, {
+    this.loading,
+    this.error,
+    Key? key,
+    this.retry,
+    this.onRefresh,
+    this.onLoadMore,
+    this.onClosed,
+  }) : super(key: key);
 
   final int maxSize = 200;
   final int spacing = 16;
@@ -40,37 +48,54 @@ class MovieGrid extends StatelessWidget {
         onNotification: (ScrollNotification scrollInfo) {
           if (loading != true &&
               scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent &&
-              movies.isNotEmpty) {
-            onLoadMore();
+              movies.isNotEmpty &&
+              onLoadMore != null) {
+            onLoadMore!();
             return true;
           }
           return true;
         },
         child: RefreshIndicator(
-          onRefresh: () => onRefresh(),
+          onRefresh: () {
+            return onRefresh == null ? () {} : onRefresh!();
+          },
           child: ListView.builder(
             itemCount: rowCount,
             padding: EdgeInsets.only(top: 16),
             itemBuilder: (context, index) {
               if (index < rowCount - 1) {
                 List<Movie> rowMovies = chunked[index];
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: rowMovies.map<Widget>(
-                    (movie) {
+                List<Widget> movieCards = rowMovies.map<Widget>((movie) {
+                  return Container(
+                    width: itemWidth,
+                    padding: EdgeInsets.only(bottom: 16),
+                    child: MovieItem(
+                      movie.title,
+                      movie.getPosterUrl(),
+                      movie.voteAverage ?? 0,
+                      () => openBuilder(movie),
+                      onClosed ?? () {},
+                    ),
+                  );
+                }).toList();
+                if (movieCards.length < rowItemsCount) {
+                  movieCards.addAll(
+                    List.generate(
+                      rowItemsCount - movieCards.length,
+                      (index) => null,
+                    ).map((element) {
                       return Container(
                         width: itemWidth,
                         padding: EdgeInsets.only(bottom: 16),
-                        child: MovieItem(
-                          movie.title,
-                          movie.getPosterUrl(),
-                          movie.voteAverage ?? 0,
-                          () => openBuilder(movie),
-                        ),
+                        child: Container(),
                       );
-                    },
-                  ).toList(),
+                    }),
+                  );
+                }
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: movieCards,
                 );
               } else {
                 if (loading ?? false) {
@@ -94,13 +119,16 @@ class MovieItem extends StatelessWidget {
   final String posterUrl;
   final double rating;
   final Widget Function() openBuilder;
-  const MovieItem(this.title, this.posterUrl, this.rating, this.openBuilder,
+  final Function onClosed;
+  const MovieItem(
+      this.title, this.posterUrl, this.rating, this.openBuilder, this.onClosed,
       {Key? key})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return OpenContainer(
+      onClosed: (_) => onClosed(),
       openElevation: 0,
       openBuilder: (_, __) => openBuilder(),
       closedColor: Colors.transparent,
