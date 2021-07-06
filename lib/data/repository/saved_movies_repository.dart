@@ -15,4 +15,12 @@ class SavedMoviesRepository {
   Future<List<Movie>> getAllMovies() async {
     return await dbHelper.getAllMovies();
   }
+
+  Future<void> deleteMovie(int movieId) async {
+    await dbHelper.deleteMovie(movieId);
+  }
+
+  Future<bool> isMovieLiked(int movieId) async {
+    return await dbHelper.isMovieLiked(movieId);
+  }
 }

@@ -13,4 +13,8 @@ class MovieVideo {
         name = json["name"],
         site = json["site"],
         type = json["type"];
+
+  String getYoutubeUrl() {
+    return "https://youtu.be/$key";
+  }
 }

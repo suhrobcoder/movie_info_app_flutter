@@ -13,4 +13,8 @@ class Cast {
         profilePath = json["profile_path"],
         character = json["character"],
         order = json["order"];
+
+  String getProfileImageUrl() {
+    return "https://image.tmdb.org/t/p/w500/$profilePath";
+  }
 }

@@ -50,4 +50,16 @@ class Movie {
   String getBackdropUrl() {
     return "https://image.tmdb.org/t/p/w500/$backdropPath";
   }
+
+  String getMovieReleaseDate() {
+    return releaseDate ?? "";
+  }
+
+  String runtimeToString() {
+    if (runtime == null) {
+      return "";
+    } else {
+      return "${runtime! ~/ 60}h ${runtime! % 60}min";
+    }
+  }
 }

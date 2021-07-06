@@ -47,7 +47,7 @@ class MovieRepository {
     return await client.getMovieCredits(movieId);
   }
 
-  Future<bool> rateMovie(int movieId, int rating) async {
+  Future<String> rateMovie(int movieId, int rating) async {
     String? sessionId = await pref.getValidSessionIdOrNull();
     if (sessionId == null) {
       var res = await client.createGuestSession();
@@ -55,10 +55,10 @@ class MovieRepository {
         sessionId = res.guestSessionId;
         await pref.saveGuestSessionId(res.guestSessionId, res.expiresAt);
       } else {
-        return false;
+        return "Something went wrong";
       }
     }
     var res = await client.rateMovie(movieId, sessionId, rating);
-    return res.statusMessage.contains("Success");
+    return res.statusMessage;
   }
 }

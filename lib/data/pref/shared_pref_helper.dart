@@ -29,6 +29,7 @@ class SharedPrefHelper {
     if (expiresAt == null) {
       return null;
     }
+    expiresAt = expiresAt.replaceAll("UTC", "Z");
     var now = DateTime.now();
     var expire = DateTime.parse(expiresAt);
     expire = expire.add(now.timeZoneOffset);

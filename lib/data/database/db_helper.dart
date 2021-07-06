@@ -129,15 +129,15 @@ class DBHelper {
             e["movie_id"] as int,
             e["title"] as String,
             e["overview"] as String,
-            e["backdrop_path"] as String,
-            e["poster_path"] as String,
+            e["backdrop_path"] as String?,
+            e["poster_path"] as String?,
             null,
             null,
-            e["release_date"] as String,
-            e["runtime"] as int,
+            e["release_date"] as String?,
+            e["runtime"] as int?,
             (e["video"] as int) > 0,
-            e["vote_average"] as double,
-            e["vote_count"] as int))
+            e["vote_average"] as double?,
+            e["vote_count"] as int?))
         .toList();
   }
 
@@ -164,5 +164,21 @@ class DBHelper {
         moviesMap[0]["vote_count"] as int);
     print(movie.toString());
     return movie;
+  }
+
+  Future<void> deleteMovie(int movieId) async {
+    Database db = await instance.database;
+    await db.delete("movies", where: "movie_id = ?", whereArgs: [movieId]);
+    await db.delete("movie_genre", where: "movie_id = ?", whereArgs: [movieId]);
+  }
+
+  Future<bool> isMovieLiked(int movieId) async {
+    Database db = await instance.database;
+    return (Sqflite.firstIntValue(
+              await db.rawQuery(
+                  "SELECT COUNT(*) FROM movies WHERE movie_id=$movieId"),
+            ) ??
+            0) >
+        0;
   }
 }

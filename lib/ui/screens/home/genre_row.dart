@@ -3,11 +3,14 @@ import 'package:movie_info_app_flutter/data/model/genre.dart';
 
 class GenreRow extends StatelessWidget {
   final List<Genre> genres;
-  final Genre selectedGenre;
-  final Function(Genre) onGenreSelected;
-  const GenreRow(this.genres, this.selectedGenre, this.onGenreSelected,
-      {Key? key})
-      : super(key: key);
+  final Genre? selectedGenre;
+  final Function(Genre)? onGenreSelected;
+  const GenreRow(
+    this.genres, {
+    Key? key,
+    this.selectedGenre,
+    this.onGenreSelected,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,13 +22,15 @@ class GenreRow extends StatelessWidget {
         itemBuilder: (context, index) {
           return GenreItem(
             genres[index].name,
-            selectedGenre == genres[index],
-            () => onGenreSelected(genres[index]),
             index == 0
                 ? -1
                 : (index == genres.length - 1)
                     ? 1
                     : 0,
+            isSelected: selectedGenre == genres[index],
+            onClick: onGenreSelected != null
+                ? () => onGenreSelected!(genres[index])
+                : null,
           );
         },
       ),
@@ -35,11 +40,11 @@ class GenreRow extends StatelessWidget {
 
 class GenreItem extends StatelessWidget {
   final String name;
-  final bool isSelected;
-  final Function onClick;
+  final bool? isSelected;
+  final Function? onClick;
   final int index;
-  const GenreItem(this.name, this.isSelected, this.onClick, this.index,
-      {Key? key})
+  const GenreItem(this.name, this.index,
+      {Key? key, this.isSelected, this.onClick})
       : super(key: key);
 
   @override
@@ -52,13 +57,14 @@ class GenreItem extends StatelessWidget {
         bottom: 8,
       ),
       child: InkWell(
-        onTap: () => onClick(),
+        onTap: onClick == null ? null : () => onClick!(),
         borderRadius: BorderRadius.circular(30),
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 4),
           decoration: BoxDecoration(
-              color:
-                  isSelected ? Colors.black.withAlpha(30) : Colors.transparent,
+              color: isSelected == true
+                  ? Colors.black.withAlpha(30)
+                  : Colors.transparent,
               border: Border.all(
                 color: Colors.black.withAlpha(30),
                 width: 2,
