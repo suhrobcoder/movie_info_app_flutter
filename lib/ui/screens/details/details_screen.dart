@@ -8,6 +8,7 @@ import 'package:movie_info_app_flutter/bloc/rate/rate_cubit.dart';
 import 'package:movie_info_app_flutter/data/model/movie.dart';
 import 'package:movie_info_app_flutter/data/repository/movie_repository.dart';
 import 'package:movie_info_app_flutter/data/repository/saved_movies_repository.dart';
+import 'package:movie_info_app_flutter/ui/screens/details/reviews_screen.dart';
 import 'package:movie_info_app_flutter/ui/screens/details/videos_column.dart';
 import 'package:movie_info_app_flutter/ui/screens/home/genre_row.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -215,14 +216,21 @@ class DetailsScreen extends StatelessWidget {
                           children: [
                             CastRow(state.casts ?? []),
                             VideosColumn(state.videos, _launchUrl),
-                            ListTile(
-                              title: Text(
-                                "Reviews",
-                                style: Theme.of(context).textTheme.headline5,
-                              ),
-                              trailing: Icon(Icons.keyboard_arrow_right),
-                              onTap: () {},
-                            )
+                            state.reviews != null
+                                ? ListTile(
+                                    title: Text(
+                                      "Reviews",
+                                      style:
+                                          Theme.of(context).textTheme.headline5,
+                                    ),
+                                    trailing: Icon(Icons.keyboard_arrow_right),
+                                    onTap: () => Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                ReviewsScreen(state.reviews!))),
+                                  )
+                                : Container(),
                           ],
                         )
                       : Container(),

@@ -11,4 +11,8 @@ class ReviewAuthor {
         username = json["username"],
         avatarPath = json["avatar_path"],
         rating = json["rating"];
+
+  String getAvatarUrl() {
+    return "https://image.tmdb.org/t/p/w500/$avatarPath";
+  }
 }
