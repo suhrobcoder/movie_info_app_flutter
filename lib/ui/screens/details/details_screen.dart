@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:like_button/like_button.dart';
 import 'package:movie_info_app_flutter/bloc/details_bloc/details_bloc.dart';
 import 'package:movie_info_app_flutter/bloc/movie_like/movie_like_bloc.dart';
@@ -22,6 +23,8 @@ class DetailsScreen extends StatelessWidget {
   late final MovieLikeBloc movieLikeBloc;
   DetailsScreen(this._movie, this.repository, this.savedRepository, {Key? key})
       : super(key: key);
+
+  double rating = 5;
 
   @override
   Widget build(BuildContext context) {
@@ -118,9 +121,20 @@ class DetailsScreen extends StatelessWidget {
                                   child: InkWell(
                                 onTap: () {
                                   if (state is! RateRunning) {
-                                    RateCubit rateCubit =
-                                        BlocProvider.of<RateCubit>(context);
-                                    rateCubit.rateMovie(8);
+                                    showDialog(
+                                      context: context,
+                                      builder: (_) => _rateDialog(
+                                        context,
+                                        (_rating) {
+                                          RateCubit rateCubit =
+                                              BlocProvider.of<RateCubit>(
+                                                  context);
+                                          rateCubit
+                                              .rateMovie((_rating * 2).toInt());
+                                          Navigator.pop(context);
+                                        },
+                                      ),
+                                    );
                                   }
                                 },
                                 child: Column(
@@ -245,4 +259,22 @@ class DetailsScreen extends StatelessWidget {
 
   void _launchUrl(String url) async =>
       await canLaunch(url) ? await launch(url) : throw "Could not launch $url";
+
+  AlertDialog _rateDialog(BuildContext context, Function(double) onRate) {
+    return AlertDialog(
+      title: Text("Rate"),
+      content: RatingBar.builder(
+        itemBuilder: (context, _) => Icon(Icons.star, color: Colors.yellow),
+        onRatingUpdate: (newRating) => rating = newRating,
+        initialRating: rating,
+        glow: false,
+        allowHalfRating: true,
+      ),
+      actions: [
+        OutlinedButton(
+            onPressed: () => Navigator.pop(context), child: Text("Cancel")),
+        OutlinedButton(onPressed: () => onRate(rating), child: Text("OK")),
+      ],
+    );
+  }
 }

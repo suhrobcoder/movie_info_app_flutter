@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:movie_info_app_flutter/data/model/movie_review.dart';
 
 class ReviewsScreen extends StatelessWidget {
@@ -68,7 +69,11 @@ class ReviewItem extends StatelessWidget {
                 style: Theme.of(context).textTheme.headline6,
               ),
               Spacer(),
-              RatingBar(review.authorDetails.rating ?? 0),
+              RatingBarIndicator(
+                itemBuilder: (_, __) => Icon(Icons.star, color: Colors.yellow),
+                rating: (review.authorDetails.rating ?? 0) / 2,
+                itemSize: 24,
+              )
             ],
           ),
           SizedBox(
@@ -80,25 +85,6 @@ class ReviewItem extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-}
-
-class RatingBar extends StatelessWidget {
-  final double rating;
-  const RatingBar(this.rating, {Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: List.generate(5, (index) => index).map((e) {
-        double x = rating - e * 2;
-        return x > 1
-            ? Icon(Icons.star, color: Colors.yellow)
-            : x == 1
-                ? Icon(Icons.star_half, color: Colors.yellow)
-                : Icon(Icons.star, color: Colors.transparent);
-      }).toList(),
     );
   }
 }
