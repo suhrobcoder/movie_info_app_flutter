@@ -101,8 +101,11 @@ class HomeScreen extends StatelessWidget {
                   var bloc = BlocProvider.of<MovieBloc>(context);
                   bool? loading;
                   String? error;
+                  print("MovieState $state");
                   if (state is MovieLoadingState) {
                     loading = true;
+                  } else {
+                    loading = false;
                   }
                   if (state is MovieLoadErrorState) {
                     error = state.error;

@@ -27,7 +27,6 @@ class DetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    double width = size.width;
     movieLikeBloc =
         MovieLikeBloc(locator.get<SavedMoviesRepository>(), _movie.id);
     return MultiBlocProvider(
@@ -248,7 +247,7 @@ class DetailsScreen extends StatelessWidget {
                                 : Container(),
                           ],
                         )
-                      : Container(),
+                      : SizedBox(),
                 ],
               ),
             );

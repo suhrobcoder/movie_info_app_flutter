@@ -29,7 +29,7 @@ class VideosColumn extends StatelessWidget {
                           launchUrl(video.getYoutubeUrl());
                         }))
                     .toList() ??
-                [Container()],
+                [SizedBox()],
           )
         ],
       ),

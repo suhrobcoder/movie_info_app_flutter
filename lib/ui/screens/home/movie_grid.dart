@@ -5,7 +5,7 @@ import 'package:movie_info_app_flutter/data/model/movie.dart';
 import 'package:movie_info_app_flutter/ui/components/error_widget.dart';
 import 'package:movie_info_app_flutter/ui/components/loading_widget.dart';
 
-class MovieGrid extends StatelessWidget {
+class MovieGrid extends StatefulWidget {
   final List<Movie> movies;
   final Widget Function(Movie) openBuilder;
   final Function? onRefresh;
@@ -26,8 +26,31 @@ class MovieGrid extends StatelessWidget {
     this.onClosed,
   }) : super(key: key);
 
+  @override
+  State<MovieGrid> createState() => _MovieGridState();
+}
+
+class _MovieGridState extends State<MovieGrid> {
   final int maxSize = 200;
+
   final int spacing = 16;
+
+  late ScrollController _scrollController;
+
+  @override
+  void initState() {
+    _scrollController = ScrollController();
+    _scrollController.addListener(() {
+      if (_scrollController.offset >=
+              _scrollController.position.maxScrollExtent &&
+          !_scrollController.position.outOfRange &&
+          widget.loading != true &&
+          widget.onLoadMore != null) {
+        widget.onLoadMore!();
+      }
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,78 +59,69 @@ class MovieGrid extends StatelessWidget {
     int width = size.width.toInt();
     int rowItemsCount = ((width - spacing) / (maxSize + spacing)).ceil();
     double itemWidth = (width - spacing * (rowItemsCount + 1)) / rowItemsCount;
-    for (var i = 0; i < movies.length; i += rowItemsCount) {
-      var end = (i + rowItemsCount < movies.length)
+    for (var i = 0; i < widget.movies.length; i += rowItemsCount) {
+      var end = (i + rowItemsCount < widget.movies.length)
           ? i + rowItemsCount
-          : movies.length;
-      chunked.add(movies.sublist(i, end));
+          : widget.movies.length;
+      chunked.add(widget.movies.sublist(i, end));
     }
     int rowCount = chunked.length + 1;
     return Expanded(
-      child: NotificationListener<ScrollNotification>(
-        onNotification: (ScrollNotification scrollInfo) {
-          if (loading != true &&
-              scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent &&
-              movies.isNotEmpty &&
-              onLoadMore != null) {
-            onLoadMore!();
-            return true;
+      child: RefreshIndicator(
+        onRefresh: () async {
+          if (widget.onRefresh != null) {
+            widget.onRefresh!();
           }
-          return true;
         },
-        child: RefreshIndicator(
-          onRefresh: () {
-            return onRefresh == null ? () {} : onRefresh!();
-          },
-          child: ListView.builder(
-            itemCount: rowCount,
-            padding: EdgeInsets.only(top: 16),
-            itemBuilder: (context, index) {
-              if (index < rowCount - 1) {
-                List<Movie> rowMovies = chunked[index];
-                List<Widget> movieCards = rowMovies.map<Widget>((movie) {
-                  return Container(
-                    width: itemWidth,
-                    padding: EdgeInsets.only(bottom: 16),
-                    child: MovieItem(
-                      movie.title,
-                      movie.getPosterUrl(),
-                      movie.voteAverage ?? 0,
-                      () => openBuilder(movie),
-                      onClosed ?? () {},
-                    ),
-                  );
-                }).toList();
-                if (movieCards.length < rowItemsCount) {
-                  movieCards.addAll(
-                    List.generate(
-                      rowItemsCount - movieCards.length,
-                      (index) => null,
-                    ).map((element) {
-                      return Container(
-                        width: itemWidth,
-                        padding: EdgeInsets.only(bottom: 16),
-                        child: Container(),
-                      );
-                    }),
-                  );
-                }
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: movieCards,
+        child: ListView.builder(
+          controller: _scrollController,
+          itemCount: rowCount,
+          padding: EdgeInsets.only(top: 16),
+          itemBuilder: (context, index) {
+            if (index < rowCount - 1) {
+              List<Movie> rowMovies = chunked[index];
+              List<Widget> movieCards = rowMovies.map<Widget>((movie) {
+                return Container(
+                  width: itemWidth,
+                  padding: EdgeInsets.only(bottom: 16),
+                  child: MovieItem(
+                    movie.title,
+                    movie.getPosterUrl(),
+                    movie.voteAverage ?? 0,
+                    () => widget.openBuilder(movie),
+                    widget.onClosed ?? () {},
+                  ),
                 );
-              } else {
-                if (loading ?? false) {
-                  return LoadingWidget();
-                } else if (error?.isNotEmpty ?? false) {
-                  return ErrorVidget(
-                      error ?? "Something went wrong", () => retry!());
-                }
+              }).toList();
+              if (movieCards.length < rowItemsCount) {
+                movieCards.addAll(
+                  List.generate(
+                    rowItemsCount - movieCards.length,
+                    (index) => null,
+                  ).map((element) {
+                    return Container(
+                      width: itemWidth,
+                      padding: EdgeInsets.only(bottom: 16),
+                      child: Container(),
+                    );
+                  }),
+                );
               }
-              return Container();
-            },
-          ),
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: movieCards,
+              );
+            } else {
+              if (widget.loading ?? false) {
+                return LoadingWidget();
+              } else if (widget.error?.isNotEmpty ?? false) {
+                return ErrorVidget(widget.error ?? "Something went wrong",
+                    () => widget.retry!());
+              }
+            }
+            return Container();
+          },
         ),
       ),
     );

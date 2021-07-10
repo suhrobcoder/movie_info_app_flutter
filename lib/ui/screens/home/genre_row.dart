@@ -14,27 +14,29 @@ class GenreRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 48,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: genres.length,
-        itemBuilder: (context, index) {
-          return GenreItem(
-            genres[index].name,
-            index == 0
-                ? -1
-                : (index == genres.length - 1)
-                    ? 1
-                    : 0,
-            isSelected: selectedGenre == genres[index],
-            onClick: onGenreSelected != null
-                ? () => onGenreSelected!(genres[index])
-                : null,
-          );
-        },
-      ),
-    );
+    return genres.isNotEmpty
+        ? Container(
+            height: 48,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: genres.length,
+              itemBuilder: (context, index) {
+                return GenreItem(
+                  genres[index].name,
+                  index == 0
+                      ? -1
+                      : (index == genres.length - 1)
+                          ? 1
+                          : 0,
+                  isSelected: selectedGenre == genres[index],
+                  onClick: onGenreSelected != null
+                      ? () => onGenreSelected!(genres[index])
+                      : null,
+                );
+              },
+            ),
+          )
+        : SizedBox();
   }
 }
 

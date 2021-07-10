@@ -1,3 +1,4 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_info_app_flutter/bloc/search/search_bloc.dart';
@@ -6,6 +7,7 @@ import 'package:movie_info_app_flutter/data/repository/movie_repository.dart';
 import 'package:movie_info_app_flutter/service_locator.dart';
 import 'package:movie_info_app_flutter/ui/components/error_widget.dart';
 import 'package:movie_info_app_flutter/ui/components/loading_widget.dart';
+import 'package:movie_info_app_flutter/ui/screens/details/details_screen.dart';
 
 import 'movie_search_item.dart';
 
@@ -55,7 +57,13 @@ class SearchScreen extends StatelessWidget {
                 itemBuilder: (context, index) {
                   Movie movie = movies[index];
                   return MovieSearchItem(
-                      movie.getPosterUrl(), movie.title, () {});
+                    movie.getPosterUrl(),
+                    movie.title,
+                    () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => DetailsScreen(movie))),
+                  );
                 },
               );
             }

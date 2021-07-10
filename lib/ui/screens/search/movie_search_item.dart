@@ -16,14 +16,20 @@ class MovieSearchItem extends StatelessWidget {
         children: [
           CachedNetworkImage(
             height: 64,
+            width: 48,
+            fit: BoxFit.cover,
             imageUrl: posterUrl,
             placeholder: (context, str) => Image.asset(
               "assets/images/poster_placeholder.jpg",
               height: 64,
+              width: 48,
+              fit: BoxFit.cover,
             ),
             errorWidget: (context, str, _) => Image.asset(
               "assets/images/poster_placeholder.jpg",
               height: 64,
+              width: 48,
+              fit: BoxFit.cover,
             ),
           ),
           SizedBox(width: 8),
