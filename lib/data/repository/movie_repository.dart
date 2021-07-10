@@ -8,8 +8,10 @@ import 'package:movie_info_app_flutter/data/network/api_client.dart';
 import 'package:movie_info_app_flutter/data/pref/shared_pref_helper.dart';
 
 class MovieRepository {
-  final ApiClient client = ApiClient();
-  final SharedPrefHelper pref = SharedPrefHelper.instance;
+  final ApiClient client;
+  final SharedPrefHelper pref;
+
+  MovieRepository(this.client, this.pref);
 
   Future<GenreResponse> getGenres() async {
     return await client.getGenres();

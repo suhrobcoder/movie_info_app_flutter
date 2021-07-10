@@ -5,6 +5,7 @@ import 'package:movie_info_app_flutter/bloc/genre/genre_bloc.dart';
 import 'package:movie_info_app_flutter/bloc/movie/movie_bloc.dart';
 import 'package:movie_info_app_flutter/data/repository/movie_repository.dart';
 import 'package:movie_info_app_flutter/data/repository/saved_movies_repository.dart';
+import 'package:movie_info_app_flutter/service_locator.dart';
 import 'package:movie_info_app_flutter/ui/screens/details/details_screen.dart';
 import 'package:movie_info_app_flutter/ui/screens/favorites/favorites_screen.dart';
 import 'package:movie_info_app_flutter/ui/screens/search/search_screen.dart';
@@ -14,8 +15,6 @@ import 'genre_row.dart';
 import 'movie_grid.dart';
 
 class HomeScreen extends StatelessWidget {
-  static MovieRepository repository = MovieRepository();
-  static SavedMoviesRepository savedRepository = SavedMoviesRepository();
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
@@ -23,9 +22,11 @@ class HomeScreen extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<MovieBloc>(
-            create: (_) => MovieBloc(repository)..add(LoadMoviesEvent())),
+            create: (_) => MovieBloc(locator.get<MovieRepository>())
+              ..add(LoadMoviesEvent())),
         BlocProvider<GenreBloc>(
-            create: (_) => GenreBloc(repository)..add(LoadGenresEvent())),
+            create: (_) => GenreBloc(locator.get<MovieRepository>())
+              ..add(LoadGenresEvent())),
       ],
       child: Container(
         child: Scaffold(
@@ -109,7 +110,7 @@ class HomeScreen extends StatelessWidget {
                   return MovieGrid(
                     state.movies,
                     (movie) {
-                      return DetailsScreen(movie, repository, savedRepository);
+                      return DetailsScreen(movie);
                     },
                     onRefresh: () => bloc.add(RefreshEvent()),
                     onLoadMore: () => bloc.add(LoadMoviesEvent()),

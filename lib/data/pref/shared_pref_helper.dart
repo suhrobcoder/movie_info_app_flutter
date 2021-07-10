@@ -1,10 +1,6 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPrefHelper {
-  SharedPrefHelper._privateConstructor();
-  static final SharedPrefHelper instance =
-      SharedPrefHelper._privateConstructor();
-
   final String keySessionId = "session_id";
   final String keyExpire = "expires_at";
 

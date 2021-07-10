@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_info_app_flutter/bloc/search/search_bloc.dart';
 import 'package:movie_info_app_flutter/data/model/movie.dart';
 import 'package:movie_info_app_flutter/data/repository/movie_repository.dart';
+import 'package:movie_info_app_flutter/service_locator.dart';
 import 'package:movie_info_app_flutter/ui/components/error_widget.dart';
 import 'package:movie_info_app_flutter/ui/components/loading_widget.dart';
 
@@ -10,13 +11,12 @@ import 'movie_search_item.dart';
 
 class SearchScreen extends StatelessWidget {
   static TextEditingController _controller = TextEditingController();
-  static MovieRepository repository = MovieRepository();
   const SearchScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => SearchBloc(repository),
+      create: (context) => SearchBloc(locator.get<MovieRepository>()),
       child: Scaffold(
         appBar: AppBar(
           title: BlocBuilder<SearchBloc, SearchState>(

@@ -2,7 +2,9 @@ import 'package:movie_info_app_flutter/data/database/db_helper.dart';
 import 'package:movie_info_app_flutter/data/model/movie.dart';
 
 class SavedMoviesRepository {
-  final DBHelper dbHelper = DBHelper.instance;
+  final DBHelper dbHelper;
+
+  SavedMoviesRepository(this.dbHelper);
 
   Future insertMovie(Movie movie) async {
     await dbHelper.insertMovie(movie);

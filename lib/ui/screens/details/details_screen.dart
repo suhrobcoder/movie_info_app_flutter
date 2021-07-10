@@ -9,6 +9,7 @@ import 'package:movie_info_app_flutter/bloc/rate/rate_cubit.dart';
 import 'package:movie_info_app_flutter/data/model/movie.dart';
 import 'package:movie_info_app_flutter/data/repository/movie_repository.dart';
 import 'package:movie_info_app_flutter/data/repository/saved_movies_repository.dart';
+import 'package:movie_info_app_flutter/service_locator.dart';
 import 'package:movie_info_app_flutter/ui/screens/details/reviews_screen.dart';
 import 'package:movie_info_app_flutter/ui/screens/details/videos_column.dart';
 import 'package:movie_info_app_flutter/ui/screens/home/genre_row.dart';
@@ -18,11 +19,8 @@ import 'cast_row.dart';
 
 class DetailsScreen extends StatelessWidget {
   final Movie _movie;
-  final MovieRepository repository;
-  final SavedMoviesRepository savedRepository;
   late final MovieLikeBloc movieLikeBloc;
-  DetailsScreen(this._movie, this.repository, this.savedRepository, {Key? key})
-      : super(key: key);
+  DetailsScreen(this._movie, {Key? key}) : super(key: key);
 
   double rating = 5;
 
@@ -30,13 +28,16 @@ class DetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     double width = size.width;
-    movieLikeBloc = MovieLikeBloc(savedRepository, _movie.id);
+    movieLikeBloc =
+        MovieLikeBloc(locator.get<SavedMoviesRepository>(), _movie.id);
     return MultiBlocProvider(
       providers: [
         BlocProvider<DetailsBloc>(
-            create: (_) => DetailsBloc(_movie, repository, savedRepository)
+            create: (_) => DetailsBloc(_movie, locator.get<MovieRepository>(),
+                locator.get<SavedMoviesRepository>())
               ..add(DetailsLoadEvent())),
-        BlocProvider<RateCubit>(create: (_) => RateCubit(repository, _movie.id))
+        BlocProvider<RateCubit>(
+            create: (_) => RateCubit(locator.get<MovieRepository>(), _movie.id))
       ],
       child: Scaffold(
         body: BlocBuilder<DetailsBloc, DetailsState>(
