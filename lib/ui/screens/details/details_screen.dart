@@ -330,8 +330,17 @@ class _DetailsScreenState extends State<DetailsScreen> {
       ),
       actions: [
         OutlinedButton(
-            onPressed: () => Navigator.pop(context), child: Text("Cancel")),
-        OutlinedButton(onPressed: () => onRate(rating), child: Text("OK")),
+            onPressed: () => Navigator.pop(context),
+            child: Text(
+              "Cancel",
+              style: TextStyle(color: textColor),
+            )),
+        OutlinedButton(
+            onPressed: () => onRate(rating),
+            child: Text(
+              "OK1",
+              style: TextStyle(color: textColor),
+            )),
       ],
     );
   }
