@@ -15,18 +15,15 @@ class ApiClient {
 
   ApiClient() {
     _dio.interceptors.add(AuthInterceptors());
-    _dio.interceptors.add(LogInterceptor());
     _dio.options.baseUrl = baseUrl;
   }
 
   Future<GenreResponse> getGenres() async {
     try {
       Response response = await _dio.get("genre/movie/list");
-      print(response.data);
       return GenreResponse.fromJson(response.data);
     } catch (error, stacktrace) {
-      print("Error: $error\n Stacktrace: $stacktrace");
-      return GenreResponse.withError("$error");
+      return GenreResponse.withError("Someting went wrong");
     }
   }
 
@@ -35,11 +32,9 @@ class ApiClient {
     try {
       Response response =
           await _dio.get("movie/popular", queryParameters: params);
-      print(response.data);
       return MovieListResponse.fromJson(response.data);
     } catch (error, stacktrace) {
-      print("Error: $error\n Stacktrace: $stacktrace");
-      return MovieListResponse.withError("$error");
+      return MovieListResponse.withError("Someting went wrong");
     }
   }
 
@@ -48,11 +43,9 @@ class ApiClient {
     try {
       Response response =
           await _dio.get("movie/top_rated", queryParameters: params);
-      print(response.data);
       return MovieListResponse.fromJson(response.data);
     } catch (error, stacktrace) {
-      print("Error: $error\n Stacktrace: $stacktrace");
-      return MovieListResponse.withError("$error");
+      return MovieListResponse.withError("Someting went wrong");
     }
   }
 
@@ -61,11 +54,9 @@ class ApiClient {
     try {
       Response response =
           await _dio.get("movie/upcoming", queryParameters: params);
-      print(response.data);
       return MovieListResponse.fromJson(response.data);
     } catch (error, stacktrace) {
-      print("Error: $error\n Stacktrace: $stacktrace");
-      return MovieListResponse.withError("$error");
+      return MovieListResponse.withError("Someting went wrong");
     }
   }
 
@@ -74,21 +65,17 @@ class ApiClient {
     try {
       Response response =
           await _dio.get("search/movie", queryParameters: params);
-      print(response.data);
       return MovieListResponse.fromJson(response.data);
     } catch (error, stacktrace) {
-      print("Error: $error\n Stacktrace: $stacktrace");
-      return MovieListResponse.withError("$error");
+      return MovieListResponse.withError("Someting went wrong");
     }
   }
 
   Future<Movie?> getMovie(int movieId) async {
     try {
       Response response = await _dio.get("movie/$movieId");
-      print(response.data.toString());
       return Movie.fromJson(response.data);
     } catch (error, stacktrace) {
-      print("Error: $error\n Stacktrace: $stacktrace");
       return null;
     }
   }
@@ -98,44 +85,36 @@ class ApiClient {
     try {
       Response response =
           await _dio.get("movie/$movieId/reviews", queryParameters: params);
-      print(response.data);
       return MovieReviewResponse.fromJson(response.data);
     } catch (error, stacktrace) {
-      print("Error: $error\n Stacktrace: $stacktrace");
-      return MovieReviewResponse.withError("$error");
+      return MovieReviewResponse.withError("Someting went wrong");
     }
   }
 
   Future<MovieVideoResponse> getMovieVideos(int movieId) async {
     try {
       Response response = await _dio.get("movie/$movieId/videos");
-      print(response.data);
       return MovieVideoResponse.fromJson(response.data);
     } catch (error, stacktrace) {
-      print("Error: $error\n Stacktrace: $stacktrace");
-      return MovieVideoResponse.withError("$error");
+      return MovieVideoResponse.withError("Someting went wrong");
     }
   }
 
   Future<CreditsResponse> getMovieCredits(int movieId) async {
     try {
       Response response = await _dio.get("movie/$movieId/credits");
-      print(response.data);
       return CreditsResponse.fromJson(response.data);
     } catch (error, stacktrace) {
-      print("Error: $error\n Stacktrace: $stacktrace");
-      return CreditsResponse.withError("$error");
+      return CreditsResponse.withError("Someting went wrong");
     }
   }
 
   Future<GuestSessionResponse> createGuestSession() async {
     try {
       Response response = await _dio.get("authentication/guest_session/new");
-      print(response.data);
       return GuestSessionResponse.fromJson(response.data);
     } catch (error, stacktrace) {
-      print("Error: $error\n Stacktrace: $stacktrace");
-      return GuestSessionResponse.withError("$error");
+      return GuestSessionResponse.withError("Someting went wrong");
     }
   }
 
@@ -145,11 +124,9 @@ class ApiClient {
     try {
       Response response = await _dio.post("movie/$movieId/rating",
           queryParameters: params, data: {"value": rating});
-      print(response.data);
       return RateResponse.fromJson(response.data);
     } catch (error, stacktrace) {
-      print("Error: $error\n Stacktrace: $stacktrace");
-      return RateResponse(-1, "$error");
+      return RateResponse(-1, "Someting went wrong");
     }
   }
 }

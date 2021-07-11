@@ -3,7 +3,13 @@ import 'package:flutter/material.dart';
 import 'colors.dart';
 
 var appTheme = ThemeData(
-  brightness: Brightness.light,
-  primaryColor: purple500,
+  brightness: Brightness.dark,
+  primaryColor: primaryColor,
+  colorScheme: ColorScheme.dark(
+      primary: primaryColor,
+      primaryVariant: primaryColor,
+      secondary: accentColor,
+      background: backgroundColor,
+      onBackground: textColor),
   fontFamily: "SFPro",
 );

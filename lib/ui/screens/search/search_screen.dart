@@ -7,6 +7,7 @@ import 'package:movie_info_app_flutter/service_locator.dart';
 import 'package:movie_info_app_flutter/ui/components/error_widget.dart';
 import 'package:movie_info_app_flutter/ui/components/loading_widget.dart';
 import 'package:movie_info_app_flutter/ui/screens/details/details_screen.dart';
+import 'package:movie_info_app_flutter/ui/theme/colors.dart';
 
 import 'movie_search_item.dart';
 
@@ -58,6 +59,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   splashRadius: 24,
                 ),
               ),
+              cursorColor: accentColor,
               style: TextStyle(color: Colors.white, fontSize: 18),
               onSubmitted: (query) {
                 searchBloc.add(SearchExecuteEvent(query));

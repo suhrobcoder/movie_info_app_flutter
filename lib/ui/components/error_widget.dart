@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movie_info_app_flutter/ui/theme/colors.dart';
 
 class ErrorVidget extends StatelessWidget {
   final String error;
@@ -8,14 +9,19 @@ class ErrorVidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Column(
-        children: [
-          Text(error),
-          OutlinedButton(
-            onPressed: () => onRetry(),
-            child: Text("Retrty"),
-          ),
-        ],
+      child: Center(
+        child: Column(
+          children: [
+            Text(error),
+            OutlinedButton(
+              onPressed: () => onRetry(),
+              child: Text(
+                "Retry",
+                style: TextStyle(color: textColor),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

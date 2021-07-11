@@ -10,9 +10,11 @@ import 'package:movie_info_app_flutter/data/model/movie.dart';
 import 'package:movie_info_app_flutter/data/repository/movie_repository.dart';
 import 'package:movie_info_app_flutter/data/repository/saved_movies_repository.dart';
 import 'package:movie_info_app_flutter/service_locator.dart';
+import 'package:movie_info_app_flutter/ui/components/loading_widget.dart';
 import 'package:movie_info_app_flutter/ui/screens/details/reviews_screen.dart';
 import 'package:movie_info_app_flutter/ui/screens/details/videos_column.dart';
 import 'package:movie_info_app_flutter/ui/screens/home/genre_row.dart';
+import 'package:movie_info_app_flutter/ui/theme/colors.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'cast_row.dart';
@@ -99,7 +101,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                           height: 64,
                           margin: EdgeInsets.only(left: 32),
                           decoration: BoxDecoration(
-                            color: Colors.white,
+                            color: primaryColor,
                             borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(32),
                               bottomLeft: Radius.circular(32),
@@ -124,13 +126,20 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                       style: TextStyle(color: Colors.black),
                                       children: [
                                         TextSpan(
-                                            text: "${movie.voteAverage}/",
-                                            style: TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w600)),
+                                          text: "${movie.voteAverage}/",
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w600,
+                                            color: textColor,
+                                          ),
+                                        ),
                                         TextSpan(
-                                            text: "10",
-                                            style: TextStyle(fontSize: 12)),
+                                          text: "10",
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: textColor,
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   ),
@@ -249,7 +258,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyText1
-                                ?.copyWith(color: Colors.black.withAlpha(150)),
+                                ?.copyWith(color: textColor.withAlpha(200)),
                           ),
                         ],
                       ),
@@ -280,7 +289,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                   : SizedBox(),
                             ],
                           )
-                        : Center(child: CircularProgressIndicator()),
+                        : LoadingWidget(),
                   ],
                 ),
               ),

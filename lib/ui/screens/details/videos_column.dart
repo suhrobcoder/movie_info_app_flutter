@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie_info_app_flutter/data/model/movie_video.dart';
+import 'package:movie_info_app_flutter/ui/theme/colors.dart';
 
 class VideosColumn extends StatelessWidget {
   final List<MovieVideo>? videos;
@@ -49,7 +50,7 @@ class VideoItem extends StatelessWidget {
       width: double.infinity,
       margin: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       decoration: BoxDecoration(
-          color: Colors.white,
+          color: primaryColor,
           borderRadius: BorderRadius.circular(8),
           boxShadow: [
             BoxShadow(color: Colors.black12, blurRadius: 10, spreadRadius: 4)
@@ -61,7 +62,7 @@ class VideoItem extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 8, vertical: 12),
           child: Text(
             name,
-            style: TextStyle(fontSize: 20),
+            style: TextStyle(fontSize: 20, color: textColor),
           ),
         ),
       ),

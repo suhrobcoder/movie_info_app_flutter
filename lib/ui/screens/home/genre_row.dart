@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie_info_app_flutter/data/model/genre.dart';
+import 'package:movie_info_app_flutter/ui/theme/colors.dart';
 
 class GenreRow extends StatelessWidget {
   final List<Genre> genres;
@@ -65,10 +66,10 @@ class GenreItem extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 4),
           decoration: BoxDecoration(
               color: isSelected == true
-                  ? Colors.black.withAlpha(30)
+                  ? accentColor.withAlpha(80)
                   : Colors.transparent,
               border: Border.all(
-                color: Colors.black.withAlpha(30),
+                color: accentColor.withAlpha(60),
                 width: 2,
               ),
               borderRadius: BorderRadius.circular(30)),

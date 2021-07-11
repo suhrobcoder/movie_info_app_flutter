@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_info_app_flutter/data/model/cast.dart';
+import 'package:movie_info_app_flutter/ui/theme/colors.dart';
 
 class CastRow extends StatelessWidget {
   final List<Cast> casts;
@@ -86,7 +87,7 @@ class CastItem extends StatelessWidget {
             style: Theme.of(context)
                 .textTheme
                 .subtitle2
-                ?.copyWith(color: Colors.black54),
+                ?.copyWith(color: textColor.withAlpha(200)),
             textAlign: TextAlign.center,
           ),
         ],
