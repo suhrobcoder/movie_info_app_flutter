@@ -12,3 +12,9 @@ class CategorySelectEvent extends MovieEvent {
 
   CategorySelectEvent(this.category);
 }
+
+class GenreSelectedEvent extends MovieEvent {
+  final int _selectedGenreId;
+
+  GenreSelectedEvent(this._selectedGenreId);
+}

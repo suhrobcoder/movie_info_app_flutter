@@ -1,4 +1,3 @@
-import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_info_app_flutter/bloc/search/search_bloc.dart';
@@ -11,72 +10,92 @@ import 'package:movie_info_app_flutter/ui/screens/details/details_screen.dart';
 
 import 'movie_search_item.dart';
 
-class SearchScreen extends StatelessWidget {
-  static TextEditingController _controller = TextEditingController();
-  const SearchScreen({Key? key}) : super(key: key);
+class SearchScreen extends StatefulWidget {
+  final TextEditingController _controller = TextEditingController();
+
+  static Widget screen() => BlocProvider(
+        create: (context) => SearchBloc(locator.get<MovieRepository>()),
+        child: SearchScreen(),
+      );
+
+  @override
+  State<SearchScreen> createState() => _SearchScreenState();
+}
+
+class _SearchScreenState extends State<SearchScreen> {
+  late SearchBloc searchBloc;
+
+  @override
+  void initState() {
+    searchBloc = BlocProvider.of<SearchBloc>(context);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    searchBloc.close();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => SearchBloc(locator.get<MovieRepository>()),
-      child: Scaffold(
-        appBar: AppBar(
-          title: BlocBuilder<SearchBloc, SearchState>(
-            builder: (context, state) {
-              return TextField(
-                controller: _controller,
-                autofocus: true,
-                decoration: InputDecoration(
-                  hintText: "Search",
-                  border: InputBorder.none,
-                  hintStyle: TextStyle(color: Colors.white30, fontSize: 18),
-                  suffixIcon: IconButton(
-                    onPressed: () {
-                      _controller.text = "";
-                    },
-                    icon: Icon(Icons.close, color: Colors.white70),
-                    splashRadius: 24,
-                  ),
-                ),
-                style: TextStyle(color: Colors.white, fontSize: 18),
-                onSubmitted: (query) {
-                  SearchBloc _bloc = BlocProvider.of<SearchBloc>(context);
-                  _bloc.add(SearchExecuteEvent(query));
-                },
-              );
-            },
-          ),
-        ),
-        body: BlocBuilder<SearchBloc, SearchState>(
+    return Scaffold(
+      appBar: AppBar(
+        title: BlocBuilder<SearchBloc, SearchState>(
           builder: (context, state) {
-            SearchBloc bloc = BlocProvider.of<SearchBloc>(context);
-            if (state is SearchLoaded) {
-              List<Movie> movies = state.movies;
-              return ListView.builder(
-                itemCount: movies.length,
-                itemBuilder: (context, index) {
-                  Movie movie = movies[index];
-                  return MovieSearchItem(
-                    movie.getPosterUrl(),
-                    movie.title,
-                    () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => DetailsScreen(movie))),
-                  );
-                },
-              );
-            }
-            if (state is Searching) {
-              return LoadingWidget();
-            }
-            if (state is SearchError) {
-              return ErrorVidget(state.error,
-                  () => bloc.add(SearchRetryEvent(_controller.text)));
-            }
-            return Container();
+            return TextField(
+              controller: widget._controller,
+              autofocus: true,
+              decoration: InputDecoration(
+                hintText: "Search",
+                border: InputBorder.none,
+                hintStyle: TextStyle(color: Colors.white30, fontSize: 18),
+                suffixIcon: IconButton(
+                  onPressed: () {
+                    widget._controller.text = "";
+                  },
+                  icon: Icon(Icons.close, color: Colors.white70),
+                  splashRadius: 24,
+                ),
+              ),
+              style: TextStyle(color: Colors.white, fontSize: 18),
+              onSubmitted: (query) {
+                searchBloc.add(SearchExecuteEvent(query));
+              },
+            );
           },
         ),
+      ),
+      body: BlocBuilder<SearchBloc, SearchState>(
+        builder: (context, state) {
+          if (state is SearchLoaded) {
+            List<Movie> movies = state.movies;
+            return ListView.builder(
+              itemCount: movies.length,
+              itemBuilder: (context, index) {
+                Movie movie = movies[index];
+                return MovieSearchItem(
+                  movie.getPosterUrl(),
+                  movie.title,
+                  () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => DetailsScreen.screen(movie))),
+                );
+              },
+            );
+          }
+          if (state is Searching) {
+            return LoadingWidget();
+          }
+          if (state is SearchError) {
+            return ErrorVidget(
+              state.error,
+              () => searchBloc.add(SearchRetryEvent(widget._controller.text)),
+            );
+          }
+          return Container();
+        },
       ),
     );
   }

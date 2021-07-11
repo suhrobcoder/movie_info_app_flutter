@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
       title: 'Movie Info App',
       debugShowCheckedModeBanner: false,
       theme: appTheme,
-      home: HomeScreen(),
+      home: HomeScreen.screen(),
     );
   }
 }

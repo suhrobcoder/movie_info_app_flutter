@@ -12,45 +12,63 @@ part 'movie_state.dart';
 class MovieBloc extends Bloc<MovieEvent, MovieState> {
   final MovieRepository repository;
   MovieBloc(this.repository)
-      : super(MovieLoadingState([], MovieCategory.POPULAR, 0));
+      : super(MovieLoadingState([], MovieCategory.POPULAR, 0, -1));
 
   @override
   Stream<MovieState> mapEventToState(
     MovieEvent event,
   ) async* {
-    print("Event : ${state.toString}");
     if (event is LoadMoviesEvent) {
-      yield MovieLoadingState(state.movies, state.category, state.page);
+      yield MovieLoadingState(
+          state.movies, state.category, state.page, state.selectedGenreId);
       MovieListResponse res = await loadMovies(state.page + 1);
       if (res.error.isEmpty) {
         var movies = state.movies;
         movies.addAll(res.results);
-        yield MovieLoadedState(movies, state.category, state.page + 1);
+        yield MovieLoadedState(
+            movies, state.category, state.page + 1, state.selectedGenreId);
       } else {
-        yield MovieLoadErrorState(
-            state.movies, state.category, state.page, res.error);
+        yield MovieLoadErrorState(state.movies, state.category, state.page,
+            res.error, state.selectedGenreId);
       }
     }
     if (event is RefreshEvent) {
-      yield MovieLoadingState([], state.category, 0);
+      yield MovieLoadingState([], state.category, 0, state.selectedGenreId);
       MovieListResponse res = await loadMovies(1);
       if (res.error.isEmpty) {
         var movies = res.results;
-        yield MovieLoadedState(movies, state.category, 1);
+        yield MovieLoadedState(
+            movies, state.category, 1, state.selectedGenreId);
       } else {
-        yield MovieLoadErrorState([], state.category, 0, res.error);
+        yield MovieLoadErrorState(
+            [], state.category, 0, res.error, state.selectedGenreId);
       }
     }
     if (event is CategorySelectEvent) {
-      yield MovieLoadingState([], event.category, 0);
+      yield MovieLoadingState([], event.category, 0, state.selectedGenreId);
       MovieListResponse res = await loadMovies(1);
       if (res.error.isEmpty) {
         var movies = res.results;
-        yield MovieLoadedState(movies, event.category, 1);
+        yield MovieLoadedState(
+            movies, event.category, 1, state.selectedGenreId);
       } else {
-        yield MovieLoadErrorState([], event.category, 0, res.error);
+        yield MovieLoadErrorState(
+            [], event.category, 0, res.error, state.selectedGenreId);
       }
     }
+    if (event is GenreSelectedEvent) {
+      yield MovieLoadedState(
+          state.movies, state.category, state.page, event._selectedGenreId);
+    }
+  }
+
+  List<Movie> getFilteredMovies() {
+    List<Movie> filteredMovies = state.movies
+        .where((movie) =>
+            state.selectedGenreId == -1 ||
+            (movie.genreIds?.contains(state.selectedGenreId) ?? false))
+        .toList();
+    return filteredMovies;
   }
 
   Future<MovieListResponse> loadMovies(int page) async {
