@@ -5,7 +5,7 @@ import 'package:movie_info_app_flutter/ui/theme/colors.dart';
 class VideosColumn extends StatelessWidget {
   final List<MovieVideo>? videos;
   final Function(String) launchUrl;
-  VideosColumn(this.videos, this.launchUrl, {Key? key}) : super(key: key);
+  const VideosColumn(this.videos, this.launchUrl, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +13,7 @@ class VideosColumn extends StatelessWidget {
       return Container();
     }
     return Container(
-      padding: EdgeInsets.only(bottom: 8),
+      padding: const EdgeInsets.only(bottom: 8),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -30,7 +30,7 @@ class VideosColumn extends StatelessWidget {
                           launchUrl(video.getYoutubeUrl());
                         }))
                     .toList() ??
-                [SizedBox()],
+                const [SizedBox()],
           )
         ],
       ),
@@ -41,28 +41,26 @@ class VideosColumn extends StatelessWidget {
 class VideoItem extends StatelessWidget {
   final String name;
   final Function onClick;
-  VideoItem(this.name, this.onClick, {Key? key}) : super(key: key);
+  const VideoItem(this.name, this.onClick, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       height: 48,
       width: double.infinity,
-      margin: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       decoration: BoxDecoration(
           color: primaryColor,
           borderRadius: BorderRadius.circular(8),
-          boxShadow: [
-            BoxShadow(color: Colors.black12, blurRadius: 10, spreadRadius: 4)
-          ]),
+          boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 10, spreadRadius: 4)]),
       child: InkWell(
         borderRadius: BorderRadius.circular(8),
         onTap: () => onClick(),
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
           child: Text(
             name,
-            style: TextStyle(fontSize: 20, color: textColor),
+            style: const TextStyle(fontSize: 20, color: textColor),
           ),
         ),
       ),

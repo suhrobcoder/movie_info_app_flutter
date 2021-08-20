@@ -8,26 +8,24 @@ abstract class MovieState {
   final bool loading;
   final int selectedGenreId;
 
-  MovieState(this.movies, this.category, this.page, this.selectedGenreId,
-      {this.loading: false});
+  const MovieState(this.movies, this.category, this.page, this.selectedGenreId,
+      {this.loading = false});
 }
 
 class MovieLoadingState extends MovieState {
-  MovieLoadingState(
-      List<Movie> movies, MovieCategory category, int page, int selectedGenreId)
+  const MovieLoadingState(List<Movie> movies, MovieCategory category, int page, int selectedGenreId)
       : super(movies, category, page, selectedGenreId, loading: true);
 }
 
 class MovieLoadedState extends MovieState {
-  MovieLoadedState(
-      List<Movie> movies, MovieCategory category, int page, int selectedGenreId)
+  const MovieLoadedState(List<Movie> movies, MovieCategory category, int page, int selectedGenreId)
       : super(movies, category, page, selectedGenreId);
 }
 
 class MovieLoadErrorState extends MovieState {
   final String error;
 
-  MovieLoadErrorState(List<Movie> movies, MovieCategory category, int page,
-      this.error, int selectedGenreId)
+  const MovieLoadErrorState(
+      List<Movie> movies, MovieCategory category, int page, this.error, int selectedGenreId)
       : super(movies, category, page, selectedGenreId);
 }

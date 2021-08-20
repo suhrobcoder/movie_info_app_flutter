@@ -20,8 +20,10 @@ class HomeScreen extends StatefulWidget {
           BlocProvider<MovieBloc>(create: (_) => MovieBloc(locator.get<MovieRepository>())),
           BlocProvider<GenreBloc>(create: (_) => GenreBloc(locator.get<MovieRepository>())),
         ],
-        child: HomeScreen(),
+        child: const HomeScreen(),
       );
+
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -47,7 +49,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
     animationController = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 300),
     );
 
     super.initState();
@@ -169,19 +171,19 @@ class HomeAppBar extends StatelessWidget {
     return SizedBox(
       height: 56,
       child: AppBar(
-        title: Text("Movie Info App"),
+        title: const Text("Movie Info App"),
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: Builder(builder: (context) {
           return IconButton(
             onPressed: () => onMenuClick(),
-            icon: Icon(Icons.menu),
+            icon: const Icon(Icons.menu),
           );
         }),
         actions: [
           IconButton(
               onPressed: () => Navigator.push(context, MySlideTransition(SearchScreen.screen())),
-              icon: Icon(Icons.search)),
+              icon: const Icon(Icons.search)),
         ],
       ),
     );
@@ -213,9 +215,7 @@ class HomeContent extends StatelessWidget {
               );
             },
           ),
-          SizedBox(
-            height: 8,
-          ),
+          const SizedBox(height: 8),
           BlocBuilder<GenreBloc, GenreState>(
             builder: (context, state) {
               if (state is GenresLoaded) {
@@ -233,7 +233,6 @@ class HomeContent extends StatelessWidget {
           ),
           BlocBuilder<MovieBloc, MovieState>(
             builder: (context, state) {
-              print(state.category.toString());
               bool? loading;
               String? error;
               if (state is MovieLoadingState) {
@@ -291,13 +290,13 @@ class HomeDrawer extends StatelessWidget {
             ),
           ),
           ListTile(
-            leading: Icon(Icons.search),
-            title: Text("Search"),
+            leading: const Icon(Icons.search),
+            title: const Text("Search"),
             onTap: () => Navigator.push(context, MySlideTransition(SearchScreen.screen())),
           ),
           ListTile(
-            leading: Icon(Icons.favorite),
-            title: Text("Favorites"),
+            leading: const Icon(Icons.favorite),
+            title: const Text("Favorites"),
             onTap: () => Navigator.push(
               context,
               MySlideTransition(FavoritesScreen.screen()),

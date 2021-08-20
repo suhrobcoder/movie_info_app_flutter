@@ -45,7 +45,6 @@ class _MovieGridState extends State<MovieGrid> {
           !_scrollController.position.outOfRange &&
           widget.loading != true &&
           widget.onLoadMore != null) {
-        print("Load More");
         widget.onLoadMore!();
       }
     });
@@ -56,7 +55,7 @@ class _MovieGridState extends State<MovieGrid> {
   Widget build(BuildContext context) {
     return Expanded(
       child: Padding(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: RefreshIndicator(
           onRefresh: () async {
             if (widget.onRefresh != null) {
@@ -64,7 +63,7 @@ class _MovieGridState extends State<MovieGrid> {
             }
           },
           child: CustomScrollView(
-            physics: BouncingScrollPhysics(),
+            physics: const BouncingScrollPhysics(),
             controller: _scrollController,
             slivers: [
               SliverGrid(
@@ -89,16 +88,16 @@ class _MovieGridState extends State<MovieGrid> {
                 ),
               ),
               SliverPadding(
-                padding: EdgeInsets.only(top: 16),
+                padding: const EdgeInsets.only(top: 16),
                 sliver: SliverToBoxAdapter(
-                    child: widget.loading ?? false ? LoadingWidget() : SizedBox()),
+                    child: widget.loading ?? false ? const LoadingWidget() : const SizedBox()),
               ),
               SliverPadding(
-                padding: EdgeInsets.only(top: 16),
+                padding: const EdgeInsets.only(top: 16),
                 sliver: SliverToBoxAdapter(
                     child: widget.error?.isNotEmpty ?? false
                         ? ErrorVidget(widget.error ?? "Something went wrong", () => widget.retry!())
-                        : SizedBox()),
+                        : const SizedBox()),
               ),
             ],
           ),
@@ -143,7 +142,7 @@ class MovieItem extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(height: 4),
+          const SizedBox(height: 4),
           Text(
             title,
             style: Theme.of(context).textTheme.headline6,
@@ -153,10 +152,7 @@ class MovieItem extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Icon(
-                Icons.star,
-                color: Colors.yellow,
-              ),
+              const Icon(Icons.star, color: Colors.yellow),
               Text(
                 rating.toString(),
                 style: Theme.of(context).textTheme.subtitle1,

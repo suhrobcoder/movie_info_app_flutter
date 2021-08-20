@@ -16,7 +16,7 @@ class GenreRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return genres.isNotEmpty
-        ? Container(
+        ? SizedBox(
             height: 48,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
@@ -30,14 +30,12 @@ class GenreRow extends StatelessWidget {
                           ? 1
                           : 0,
                   isSelected: selectedGenre == genres[index],
-                  onClick: onGenreSelected != null
-                      ? () => onGenreSelected!(genres[index])
-                      : null,
+                  onClick: onGenreSelected != null ? () => onGenreSelected!(genres[index]) : null,
                 );
               },
             ),
           )
-        : SizedBox();
+        : const SizedBox();
   }
 }
 
@@ -46,8 +44,7 @@ class GenreItem extends StatelessWidget {
   final bool? isSelected;
   final Function? onClick;
   final int index;
-  const GenreItem(this.name, this.index,
-      {Key? key, this.isSelected, this.onClick})
+  const GenreItem(this.name, this.index, {Key? key, this.isSelected, this.onClick})
       : super(key: key);
 
   @override
@@ -63,11 +60,9 @@ class GenreItem extends StatelessWidget {
         onTap: onClick == null ? null : () => onClick!(),
         borderRadius: BorderRadius.circular(30),
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 4),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
           decoration: BoxDecoration(
-              color: isSelected == true
-                  ? accentColor.withAlpha(80)
-                  : Colors.transparent,
+              color: isSelected == true ? accentColor.withAlpha(80) : Colors.transparent,
               border: Border.all(
                 color: accentColor.withAlpha(60),
                 width: 2,

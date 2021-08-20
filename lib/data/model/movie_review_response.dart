@@ -8,24 +8,21 @@ class MovieReviewResponse {
   final int totalResults;
   final String error;
 
-  MovieReviewResponse(this.id, this.page, this.results, this.totalPages,
-      this.totalResults, this.error);
+  MovieReviewResponse(
+      this.id, this.page, this.results, this.totalPages, this.totalResults, this.error);
 
   MovieReviewResponse.fromJson(Map<String, dynamic> json)
       : id = json["id"],
         page = json["page"],
-        results = (json["results"] as List)
-            .map((e) => MovieReview.fromJson(e))
-            .toList(),
+        results = (json["results"] as List).map((e) => MovieReview.fromJson(e)).toList(),
         totalPages = json["total_pages"],
         totalResults = json["total_results"],
         error = "";
 
-  MovieReviewResponse.withError(String errorMsg)
+  MovieReviewResponse.withError(this.error)
       : id = 0,
         page = 0,
         results = [],
         totalPages = 0,
-        totalResults = 0,
-        error = errorMsg;
+        totalResults = 0;
 }

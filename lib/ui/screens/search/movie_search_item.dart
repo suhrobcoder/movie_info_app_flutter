@@ -5,8 +5,7 @@ class MovieSearchItem extends StatelessWidget {
   final String posterUrl;
   final String title;
   final Function onClick;
-  const MovieSearchItem(this.posterUrl, this.title, this.onClick, {Key? key})
-      : super(key: key);
+  const MovieSearchItem(this.posterUrl, this.title, this.onClick, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +31,7 @@ class MovieSearchItem extends StatelessWidget {
               fit: BoxFit.cover,
             ),
           ),
-          SizedBox(width: 8),
+          const SizedBox(width: 8),
           Expanded(
             child: Text(
               title,

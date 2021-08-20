@@ -12,7 +12,7 @@ class ReviewsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Reviews"),
+        title: const Text("Reviews"),
       ),
       body: ListView.builder(
         itemCount: reviews.length,
@@ -32,20 +32,18 @@ class ReviewItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      padding: EdgeInsets.all(4),
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.all(4),
       decoration: BoxDecoration(
         color: backgroundColor,
         borderRadius: BorderRadius.circular(8),
-        boxShadow: [
-          BoxShadow(color: Colors.black12, blurRadius: 10, spreadRadius: 4)
-        ],
+        boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 10, spreadRadius: 4)],
       ),
       child: Column(
         children: [
           Row(
             children: [
-              Container(
+              SizedBox(
                 width: 48,
                 height: 48,
                 child: ClipRRect(
@@ -62,22 +60,22 @@ class ReviewItem extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 8,
               ),
               Text(
                 review.author,
                 style: Theme.of(context).textTheme.headline6,
               ),
-              Spacer(),
+              const Spacer(),
               RatingBarIndicator(
-                itemBuilder: (_, __) => Icon(Icons.star, color: Colors.yellow),
+                itemBuilder: (_, __) => const Icon(Icons.star, color: Colors.yellow),
                 rating: (review.authorDetails.rating ?? 0) / 2,
                 itemSize: 24,
               )
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 8,
           ),
           Text(

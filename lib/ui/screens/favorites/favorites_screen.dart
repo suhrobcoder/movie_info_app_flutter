@@ -9,10 +9,11 @@ import 'package:movie_info_app_flutter/ui/screens/home/movie_grid.dart';
 
 class FavoritesScreen extends StatefulWidget {
   static Widget screen() => BlocProvider(
-        create: (context) =>
-            FavoritesBloc(locator.get<SavedMoviesRepository>()),
-        child: FavoritesScreen(),
+        create: (context) => FavoritesBloc(locator.get<SavedMoviesRepository>()),
+        child: const FavoritesScreen(),
       );
+
+  const FavoritesScreen({Key? key}) : super(key: key);
 
   @override
   State<FavoritesScreen> createState() => _FavoritesScreenState();
@@ -32,14 +33,14 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Favorites"),
+        title: const Text("Favorites"),
       ),
       body: Column(
         children: [
           BlocBuilder<FavoritesBloc, FavoritesState>(
             builder: (context, state) {
               if (state is FavoritesLoading) {
-                return LoadingWidget();
+                return const LoadingWidget();
               } else if (state is FavoritesLoaded) {
                 return MovieGrid(
                   state.movies,

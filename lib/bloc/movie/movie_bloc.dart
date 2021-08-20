@@ -12,9 +12,9 @@ part 'movie_state.dart';
 
 class MovieBloc extends Bloc<MovieEvent, MovieState> {
   final MovieRepository repository;
-  MovieBloc(this.repository) : super(MovieLoadingState([], MovieCategory.POPULAR, 0, -1));
+  MovieBloc(this.repository) : super(const MovieLoadingState([], MovieCategory.POPULAR, 0, -1));
 
-  CancelToken? _cancelToken = null;
+  CancelToken? _cancelToken;
 
   @override
   Stream<MovieState> mapEventToState(
@@ -33,23 +33,23 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
       }
     }
     if (event is RefreshEvent) {
-      yield MovieLoadingState([], state.category, 0, state.selectedGenreId);
+      yield MovieLoadingState(const [], state.category, 0, state.selectedGenreId);
       MovieListResponse res = await loadMovies(1);
       if (res.error.isEmpty) {
         var movies = res.results;
         yield MovieLoadedState(movies, state.category, 1, state.selectedGenreId);
       } else {
-        yield MovieLoadErrorState([], state.category, 0, res.error, state.selectedGenreId);
+        yield MovieLoadErrorState(const [], state.category, 0, res.error, state.selectedGenreId);
       }
     }
     if (event is CategorySelectEvent) {
-      yield MovieLoadingState([], event.category, 0, state.selectedGenreId);
+      yield MovieLoadingState(const [], event.category, 0, state.selectedGenreId);
       MovieListResponse res = await loadMovies(1);
       if (res.error.isEmpty) {
         var movies = res.results;
         yield MovieLoadedState(movies, event.category, 1, state.selectedGenreId);
       } else {
-        yield MovieLoadErrorState([], event.category, 0, res.error, state.selectedGenreId);
+        yield MovieLoadErrorState(const [], event.category, 0, res.error, state.selectedGenreId);
       }
     }
     if (event is GenreSelectedEvent) {
@@ -93,4 +93,5 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
   }
 }
 
+// ignore: constant_identifier_names
 enum MovieCategory { POPULAR, TOP_RATED, UPCOMING }

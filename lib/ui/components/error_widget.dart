@@ -8,20 +8,18 @@ class ErrorVidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Center(
-        child: Column(
-          children: [
-            Text(error),
-            OutlinedButton(
-              onPressed: () => onRetry(),
-              child: Text(
-                "Retry",
-                style: TextStyle(color: textColor),
-              ),
+    return Center(
+      child: Column(
+        children: [
+          Text(error),
+          OutlinedButton(
+            onPressed: () => onRetry(),
+            child: const Text(
+              "Retry",
+              style: TextStyle(color: textColor),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

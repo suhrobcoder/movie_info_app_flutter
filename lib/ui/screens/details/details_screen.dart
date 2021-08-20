@@ -71,7 +71,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
           return Stack(
             children: [
               SingleChildScrollView(
-                physics: BouncingScrollPhysics(),
+                physics: const BouncingScrollPhysics(),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -79,9 +79,9 @@ class _DetailsScreenState extends State<DetailsScreen> {
                       alignment: Alignment.bottomCenter,
                       children: [
                         Padding(
-                          padding: EdgeInsets.only(bottom: 32),
+                          padding: const EdgeInsets.only(bottom: 32),
                           child: ClipRRect(
-                            borderRadius: BorderRadius.only(bottomLeft: Radius.circular(32)),
+                            borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(32)),
                             child: CachedNetworkImage(
                               width: double.infinity,
                               fit: BoxFit.fill,
@@ -97,8 +97,8 @@ class _DetailsScreenState extends State<DetailsScreen> {
                         ),
                         Container(
                           height: 64,
-                          margin: EdgeInsets.only(left: 32),
-                          decoration: BoxDecoration(
+                          margin: const EdgeInsets.only(left: 32),
+                          decoration: const BoxDecoration(
                             color: primaryColor,
                             borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(32),
@@ -118,20 +118,20 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                   child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Icon(Icons.star, color: Colors.yellow),
+                                  const Icon(Icons.star, color: Colors.yellow),
                                   RichText(
                                     text: TextSpan(
-                                      style: TextStyle(color: Colors.black),
+                                      style: const TextStyle(color: Colors.black),
                                       children: [
                                         TextSpan(
                                           text: "${movie.voteAverage}/",
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                             fontSize: 14,
                                             fontWeight: FontWeight.w600,
                                             color: textColor,
                                           ),
                                         ),
-                                        TextSpan(
+                                        const TextSpan(
                                           text: "10",
                                           style: TextStyle(
                                             fontSize: 12,
@@ -170,7 +170,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                   },
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
+                                    children: const [
                                       Icon(Icons.star),
                                       Text("Rate this"),
                                     ],
@@ -220,12 +220,12 @@ class _DetailsScreenState extends State<DetailsScreen> {
                         children: [
                           Text(
                             movie.title,
-                            style: TextStyle(fontSize: 32, fontWeight: FontWeight.w600),
+                            style: const TextStyle(fontSize: 32, fontWeight: FontWeight.w600),
                           ),
                           Row(
                             children: [
                               Text(movie.getMovieReleaseDate()),
-                              SizedBox(width: 16),
+                              const SizedBox(width: 16),
                               Text(movie.runtimeToString()),
                             ],
                           ),
@@ -234,7 +234,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                     ),
                     GenreRow(movie.genres ?? []),
                     Padding(
-                      padding: EdgeInsets.all(16),
+                      padding: const EdgeInsets.all(16),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -258,32 +258,32 @@ class _DetailsScreenState extends State<DetailsScreen> {
                             children: [
                               state.casts != null && (state.casts?.isNotEmpty ?? false)
                                   ? CastRow(state.casts ?? [])
-                                  : SizedBox(),
+                                  : const SizedBox(),
                               state.videos != null && (state.videos?.isNotEmpty ?? false)
                                   ? VideosColumn(state.videos, _launchUrl)
-                                  : SizedBox(),
+                                  : const SizedBox(),
                               state.reviews != null && (state.reviews?.isNotEmpty ?? false)
                                   ? ListTile(
                                       title: Text(
                                         "Reviews",
                                         style: Theme.of(context).textTheme.headline5,
                                       ),
-                                      trailing: Icon(Icons.keyboard_arrow_right),
+                                      trailing: const Icon(Icons.keyboard_arrow_right),
                                       onTap: () => Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) => ReviewsScreen(state.reviews!))),
                                     )
-                                  : SizedBox(),
+                                  : const SizedBox(),
                             ],
                           )
-                        : LoadingWidget(),
+                        : const LoadingWidget(),
                   ],
                 ),
               ),
               SafeArea(
                 child: Container(
-                  margin: EdgeInsets.symmetric(horizontal: 16),
+                  margin: const EdgeInsets.symmetric(horizontal: 16),
                   width: 48,
                   height: 48,
                   decoration: BoxDecoration(
@@ -292,7 +292,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                   ),
                   child: IconButton(
                     onPressed: () => Navigator.pop(context),
-                    icon: Icon(Icons.arrow_back, color: Colors.white),
+                    icon: const Icon(Icons.arrow_back, color: Colors.white),
                   ),
                 ),
               ),
@@ -308,9 +308,9 @@ class _DetailsScreenState extends State<DetailsScreen> {
 
   AlertDialog _rateDialog(BuildContext context, Function(double) onRate) {
     return AlertDialog(
-      title: Text("Rate"),
+      title: const Text("Rate"),
       content: RatingBar.builder(
-        itemBuilder: (context, _) => Icon(Icons.star, color: Colors.yellow),
+        itemBuilder: (context, _) => const Icon(Icons.star, color: Colors.yellow),
         onRatingUpdate: (newRating) => rating = newRating,
         initialRating: rating,
         glow: false,
@@ -319,13 +319,13 @@ class _DetailsScreenState extends State<DetailsScreen> {
       actions: [
         OutlinedButton(
             onPressed: () => Navigator.pop(context),
-            child: Text(
+            child: const Text(
               "Cancel",
               style: TextStyle(color: textColor),
             )),
         OutlinedButton(
             onPressed: () => onRate(rating),
-            child: Text(
+            child: const Text(
               "OK",
               style: TextStyle(color: textColor),
             )),

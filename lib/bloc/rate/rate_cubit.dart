@@ -12,7 +12,6 @@ class RateCubit extends Cubit<RateState> {
   Future rateMovie(int rating) async {
     emit(RateRunning());
     String res = await repository.rateMovie(movieId, rating);
-    print("Rate res: $res");
     emit(RateCompleted(res));
   }
 }

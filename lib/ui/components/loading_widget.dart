@@ -7,8 +7,8 @@ class LoadingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(bottom: 16),
-      child: Center(
+      padding: const EdgeInsets.only(bottom: 16),
+      child: const Center(
         child: CircularProgressIndicator(color: accentColor),
       ),
     );

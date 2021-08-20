@@ -16,9 +16,7 @@ class DBHelper {
   static Database? _database;
 
   Future<Database> get database async {
-    if (_database == null) {
-      _database = await _initDatabase();
-    }
+    _database ??= await _initDatabase();
     return _database!;
   }
 
@@ -65,11 +63,10 @@ class DBHelper {
   Future insertGenres(List<Genre> genres) async {
     Database db = await instance.database;
     Batch batch = db.batch();
-    genres.forEach((genre) {
+    for (Genre genre in genres) {
       var genreMap = {"genre_id": genre.id, "name": genre.name};
-      batch.insert("genres", genreMap,
-          conflictAlgorithm: ConflictAlgorithm.replace);
-    });
+      batch.insert("genres", genreMap, conflictAlgorithm: ConflictAlgorithm.replace);
+    }
     await batch.commit();
   }
 
@@ -79,11 +76,10 @@ class DBHelper {
         columns: ["genre_id"], where: "movie_id = ?", whereArgs: [movieId]);
     List<Genre> allGenres = [];
     for (var genreId in allGenreIds.toList()) {
-      var genre = await db.query("genres",
-          where: "genre_id = ?", whereArgs: [genreId["genre_id"] ?? 0]);
+      var genre =
+          await db.query("genres", where: "genre_id = ?", whereArgs: [genreId["genre_id"] ?? 0]);
       if (genre.isNotEmpty) {
-        allGenres.add(
-            Genre(genre[0]["genre_id"] as int, genre[0]["name"] as String));
+        allGenres.add(Genre(genre[0]["genre_id"] as int, genre[0]["name"] as String));
       }
     }
     return allGenres;
@@ -92,11 +88,10 @@ class DBHelper {
   Future insertMovieGenre(int movieId, List<int> genreIds) async {
     Database db = await instance.database;
     Batch batch = db.batch();
-    genreIds.forEach((genreId) {
+    for (int genreId in genreIds) {
       var value = {"movie_id": movieId, "genre_id": genreId};
-      batch.insert("movie_genre", value,
-          conflictAlgorithm: ConflictAlgorithm.replace);
-    });
+      batch.insert("movie_genre", value, conflictAlgorithm: ConflictAlgorithm.replace);
+    }
     await batch.commit();
   }
 
@@ -117,8 +112,7 @@ class DBHelper {
     List<int> genreIds = movie.genres?.map((e) => e.id).toList() ?? [];
     await insertMovieGenre(movie.id, genreIds);
     await insertGenres(movie.genres ?? []);
-    await db.insert("movies", movieMap,
-        conflictAlgorithm: ConflictAlgorithm.replace);
+    await db.insert("movies", movieMap, conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
   Future<List<Movie>> getAllMovies() async {
@@ -143,8 +137,7 @@ class DBHelper {
 
   Future<Movie?> getMovieById(int movieId) async {
     Database db = await instance.database;
-    var moviesMap =
-        await db.query("movies", where: "movie_id = ?", whereArgs: [movieId]);
+    var moviesMap = await db.query("movies", where: "movie_id = ?", whereArgs: [movieId]);
     var genres = await getGenresByMovieId(movieId);
     if (moviesMap.isEmpty) {
       return null;
@@ -162,7 +155,6 @@ class DBHelper {
         (moviesMap[0]["video"] as int) > 0,
         moviesMap[0]["vote_average"] as double,
         moviesMap[0]["vote_count"] as int);
-    print(movie.toString());
     return movie;
   }
 
@@ -175,8 +167,7 @@ class DBHelper {
   Future<bool> isMovieLiked(int movieId) async {
     Database db = await instance.database;
     return (Sqflite.firstIntValue(
-              await db.rawQuery(
-                  "SELECT COUNT(*) FROM movies WHERE movie_id=$movieId"),
+              await db.rawQuery("SELECT COUNT(*) FROM movies WHERE movie_id=$movieId"),
             ) ??
             0) >
         0;

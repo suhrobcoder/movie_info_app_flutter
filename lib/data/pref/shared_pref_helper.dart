@@ -7,9 +7,7 @@ class SharedPrefHelper {
   static SharedPreferences? _prefs;
 
   Future<SharedPreferences> get prefs async {
-    if (_prefs == null) {
-      _prefs = await SharedPreferences.getInstance();
-    }
+    _prefs ??= await SharedPreferences.getInstance();
     return _prefs!;
   }
 
@@ -29,7 +27,6 @@ class SharedPrefHelper {
     var now = DateTime.now();
     var expire = DateTime.parse(expiresAt);
     expire = expire.add(now.timeZoneOffset);
-    print(now.compareTo(expire));
     return now.compareTo(expire) < 0 ? pref.getString(keySessionId) : null;
   }
 }

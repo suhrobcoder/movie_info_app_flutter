@@ -9,12 +9,10 @@ class MovieListResponse {
 
   MovieListResponse.fromJson(Map<String, dynamic> json)
       : page = json["page"],
-        results =
-            (json["results"] as List).map((e) => Movie.fromJson(e)).toList(),
+        results = (json["results"] as List).map((e) => Movie.fromJson(e)).toList(),
         error = "";
 
-  MovieListResponse.withError(String error)
+  MovieListResponse.withError(this.error)
       : page = -1,
-        results = [],
-        error = error;
+        results = [];
 }

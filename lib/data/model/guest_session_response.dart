@@ -4,8 +4,7 @@ class GuestSessionResponse {
   final String expiresAt;
   final String error;
 
-  GuestSessionResponse(
-      this.success, this.guestSessionId, this.expiresAt, this.error);
+  GuestSessionResponse(this.success, this.guestSessionId, this.expiresAt, this.error);
 
   GuestSessionResponse.fromJson(Map<String, dynamic> json)
       : success = json["success"],
@@ -13,9 +12,8 @@ class GuestSessionResponse {
         expiresAt = json["expires_at"],
         error = "";
 
-  GuestSessionResponse.withError(String errorMsg)
+  GuestSessionResponse.withError(this.error)
       : success = false,
         guestSessionId = "",
-        expiresAt = "",
-        error = errorMsg;
+        expiresAt = "";
 }

@@ -10,7 +10,7 @@ class CastRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 8),
+      padding: const EdgeInsets.symmetric(vertical: 8),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -21,7 +21,7 @@ class CastRow extends StatelessWidget {
               style: Theme.of(context).textTheme.headline5,
             ),
           ),
-          Container(
+          SizedBox(
             height: 124,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
@@ -30,15 +30,13 @@ class CastRow extends StatelessWidget {
                 Cast cast = casts[index];
                 return Padding(
                   padding: EdgeInsets.only(
-                      left: index == 0 ? 16 : 4,
-                      right: index == casts.length - 1 ? 16 : 4),
-                  child: CastItem(
-                      cast.getProfileImageUrl(), cast.name, cast.character),
+                      left: index == 0 ? 16 : 4, right: index == casts.length - 1 ? 16 : 4),
+                  child: CastItem(cast.getProfileImageUrl(), cast.name, cast.character),
                 );
               },
             ),
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
         ],
       ),
     );
@@ -49,16 +47,15 @@ class CastItem extends StatelessWidget {
   final String imageUrl;
   final String name;
   final String character;
-  const CastItem(this.imageUrl, this.name, this.character, {Key? key})
-      : super(key: key);
+  const CastItem(this.imageUrl, this.name, this.character, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: 96,
       child: Column(
         children: [
-          Container(
+          SizedBox(
             width: 56,
             height: 56,
             child: ClipRRect(
@@ -84,10 +81,7 @@ class CastItem extends StatelessWidget {
           Text(
             character,
             maxLines: 2,
-            style: Theme.of(context)
-                .textTheme
-                .subtitle2
-                ?.copyWith(color: textColor.withAlpha(200)),
+            style: Theme.of(context).textTheme.subtitle2?.copyWith(color: textColor.withAlpha(200)),
             textAlign: TextAlign.center,
           ),
         ],

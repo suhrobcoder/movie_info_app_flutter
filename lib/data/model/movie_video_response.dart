@@ -9,13 +9,10 @@ class MovieVideoResponse {
 
   MovieVideoResponse.fromJson(Map<String, dynamic> json)
       : id = json["id"],
-        results = (json["results"] as List)
-            .map((e) => MovieVideo.fromJson(e))
-            .toList(),
+        results = (json["results"] as List).map((e) => MovieVideo.fromJson(e)).toList(),
         error = "";
 
-  MovieVideoResponse.withError(String errorMsg)
+  MovieVideoResponse.withError(this.error)
       : id = 0,
-        results = [],
-        error = errorMsg;
+        results = [];
 }

@@ -7,14 +7,16 @@ import 'package:movie_info_app_flutter/ui/theme/colors.dart';
 
 void main() {
   setup();
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(
+      const SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
         systemNavigationBarColor: backgroundColor,
         systemNavigationBarIconBrightness: Brightness.light,

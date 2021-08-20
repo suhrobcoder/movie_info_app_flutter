@@ -20,7 +20,7 @@ class CategoryRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 50,
-      padding: EdgeInsets.only(top: 8),
+      padding: const EdgeInsets.only(top: 8),
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: categories.length,
@@ -48,7 +48,7 @@ class CategoryItem extends StatelessWidget {
     return GestureDetector(
       onTap: () => onClick(),
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -56,9 +56,7 @@ class CategoryItem extends StatelessWidget {
               title,
               style: Theme.of(context).textTheme.headline5?.copyWith(fontWeight: FontWeight.w600),
             ),
-            SizedBox(
-              height: 4,
-            ),
+            const SizedBox(height: 4),
             Container(
               width: 42,
               height: 6,

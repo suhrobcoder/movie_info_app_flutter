@@ -12,8 +12,7 @@ class CreditsResponse {
         cast = (json["cast"] as List).map((e) => Cast.fromJson(e)).toList(),
         error = "";
 
-  CreditsResponse.withError(String errorMsg)
+  CreditsResponse.withError(this.error)
       : id = 0,
-        cast = [],
-        error = errorMsg;
+        cast = [];
 }

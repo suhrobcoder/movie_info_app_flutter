@@ -19,6 +19,8 @@ class SearchScreen extends StatefulWidget {
         child: SearchScreen(),
       );
 
+  SearchScreen({Key? key}) : super(key: key);
+
   @override
   State<SearchScreen> createState() => _SearchScreenState();
 }
@@ -50,17 +52,17 @@ class _SearchScreenState extends State<SearchScreen> {
               decoration: InputDecoration(
                 hintText: "Search",
                 border: InputBorder.none,
-                hintStyle: TextStyle(color: Colors.white30, fontSize: 18),
+                hintStyle: const TextStyle(color: Colors.white30, fontSize: 18),
                 suffixIcon: IconButton(
                   onPressed: () {
                     widget._controller.text = "";
                   },
-                  icon: Icon(Icons.close, color: Colors.white70),
+                  icon: const Icon(Icons.close, color: Colors.white70),
                   splashRadius: 24,
                 ),
               ),
               cursorColor: accentColor,
-              style: TextStyle(color: Colors.white, fontSize: 18),
+              style: const TextStyle(color: Colors.white, fontSize: 18),
               onSubmitted: (query) {
                 searchBloc.add(SearchExecuteEvent(query));
               },
@@ -73,7 +75,7 @@ class _SearchScreenState extends State<SearchScreen> {
           if (state is SearchLoaded) {
             List<Movie> movies = state.movies;
             return ListView.builder(
-              physics: BouncingScrollPhysics(),
+              physics: const BouncingScrollPhysics(),
               itemCount: movies.length,
               itemBuilder: (context, index) {
                 Movie movie = movies[index];
@@ -87,7 +89,7 @@ class _SearchScreenState extends State<SearchScreen> {
             );
           }
           if (state is Searching) {
-            return LoadingWidget();
+            return const LoadingWidget();
           }
           if (state is SearchError) {
             return ErrorVidget(

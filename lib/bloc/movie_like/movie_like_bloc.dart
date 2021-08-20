@@ -8,7 +8,6 @@ class MovieLikeBloc {
   MovieLikeBloc(this.repository, this.movieId);
 
   Future<bool> isMovieLiked() async {
-    print((await repository.getAllMovies()).toString());
     return await repository.isMovieLiked(movieId);
   }
 
