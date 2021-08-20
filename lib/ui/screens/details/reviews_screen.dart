@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:movie_info_app_flutter/data/model/movie_review.dart';
+import 'package:movie_info_app_flutter/ui/theme/colors.dart';
 
 class ReviewsScreen extends StatelessWidget {
   final List<MovieReview> reviews;
@@ -34,7 +35,7 @@ class ReviewItem extends StatelessWidget {
       margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       padding: EdgeInsets.all(4),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: backgroundColor,
         borderRadius: BorderRadius.circular(8),
         boxShadow: [
           BoxShadow(color: Colors.black12, blurRadius: 10, spreadRadius: 4)

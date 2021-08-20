@@ -22,40 +22,40 @@ class ApiClient {
     try {
       Response response = await _dio.get("genre/movie/list");
       return GenreResponse.fromJson(response.data);
-    } catch (error, stacktrace) {
+    } catch (error) {
       return GenreResponse.withError("Someting went wrong");
     }
   }
 
-  Future<MovieListResponse> getPopularMovies(int page) async {
+  Future<MovieListResponse> getPopularMovies(int page, CancelToken cancelToken) async {
     var params = {"page": page};
     try {
       Response response =
-          await _dio.get("movie/popular", queryParameters: params);
+          await _dio.get("movie/popular", queryParameters: params, cancelToken: cancelToken);
       return MovieListResponse.fromJson(response.data);
-    } catch (error, stacktrace) {
+    } catch (error) {
       return MovieListResponse.withError("Someting went wrong");
     }
   }
 
-  Future<MovieListResponse> getTopRatedMovies(int page) async {
+  Future<MovieListResponse> getTopRatedMovies(int page, CancelToken cancelToken) async {
     var params = {"page": page};
     try {
       Response response =
-          await _dio.get("movie/top_rated", queryParameters: params);
+          await _dio.get("movie/top_rated", queryParameters: params, cancelToken: cancelToken);
       return MovieListResponse.fromJson(response.data);
-    } catch (error, stacktrace) {
+    } catch (error) {
       return MovieListResponse.withError("Someting went wrong");
     }
   }
 
-  Future<MovieListResponse> getUpcomingMovies(int page) async {
+  Future<MovieListResponse> getUpcomingMovies(int page, CancelToken cancelToken) async {
     var params = {"page": page};
     try {
       Response response =
-          await _dio.get("movie/upcoming", queryParameters: params);
+          await _dio.get("movie/upcoming", queryParameters: params, cancelToken: cancelToken);
       return MovieListResponse.fromJson(response.data);
-    } catch (error, stacktrace) {
+    } catch (error) {
       return MovieListResponse.withError("Someting went wrong");
     }
   }
@@ -63,10 +63,9 @@ class ApiClient {
   Future<MovieListResponse> searchMovies(String query, int page) async {
     var params = {"query": query, "page": page};
     try {
-      Response response =
-          await _dio.get("search/movie", queryParameters: params);
+      Response response = await _dio.get("search/movie", queryParameters: params);
       return MovieListResponse.fromJson(response.data);
-    } catch (error, stacktrace) {
+    } catch (error) {
       return MovieListResponse.withError("Someting went wrong");
     }
   }
@@ -75,7 +74,7 @@ class ApiClient {
     try {
       Response response = await _dio.get("movie/$movieId");
       return Movie.fromJson(response.data);
-    } catch (error, stacktrace) {
+    } catch (error) {
       return null;
     }
   }
@@ -83,10 +82,9 @@ class ApiClient {
   Future<MovieReviewResponse> getMovieReviews(int movieId, int page) async {
     var params = {"page": page};
     try {
-      Response response =
-          await _dio.get("movie/$movieId/reviews", queryParameters: params);
+      Response response = await _dio.get("movie/$movieId/reviews", queryParameters: params);
       return MovieReviewResponse.fromJson(response.data);
-    } catch (error, stacktrace) {
+    } catch (error) {
       return MovieReviewResponse.withError("Someting went wrong");
     }
   }
@@ -95,7 +93,7 @@ class ApiClient {
     try {
       Response response = await _dio.get("movie/$movieId/videos");
       return MovieVideoResponse.fromJson(response.data);
-    } catch (error, stacktrace) {
+    } catch (error) {
       return MovieVideoResponse.withError("Someting went wrong");
     }
   }
@@ -104,7 +102,7 @@ class ApiClient {
     try {
       Response response = await _dio.get("movie/$movieId/credits");
       return CreditsResponse.fromJson(response.data);
-    } catch (error, stacktrace) {
+    } catch (error) {
       return CreditsResponse.withError("Someting went wrong");
     }
   }
@@ -113,19 +111,18 @@ class ApiClient {
     try {
       Response response = await _dio.get("authentication/guest_session/new");
       return GuestSessionResponse.fromJson(response.data);
-    } catch (error, stacktrace) {
+    } catch (error) {
       return GuestSessionResponse.withError("Someting went wrong");
     }
   }
 
-  Future<RateResponse> rateMovie(
-      int movieId, String guestSessionId, int rating) async {
+  Future<RateResponse> rateMovie(int movieId, String guestSessionId, int rating) async {
     var params = {"guest_session_id": guestSessionId};
     try {
-      Response response = await _dio.post("movie/$movieId/rating",
-          queryParameters: params, data: {"value": rating});
+      Response response = await _dio
+          .post("movie/$movieId/rating", queryParameters: params, data: {"value": rating});
       return RateResponse.fromJson(response.data);
-    } catch (error, stacktrace) {
+    } catch (error) {
       return RateResponse(-1, "Someting went wrong");
     }
   }

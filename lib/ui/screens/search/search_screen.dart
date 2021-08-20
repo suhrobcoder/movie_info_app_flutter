@@ -73,16 +73,15 @@ class _SearchScreenState extends State<SearchScreen> {
           if (state is SearchLoaded) {
             List<Movie> movies = state.movies;
             return ListView.builder(
+              physics: BouncingScrollPhysics(),
               itemCount: movies.length,
               itemBuilder: (context, index) {
                 Movie movie = movies[index];
                 return MovieSearchItem(
                   movie.getPosterUrl(),
                   movie.title,
-                  () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => DetailsScreen.screen(movie))),
+                  () => Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => DetailsScreen.screen(movie))),
                 );
               },
             );

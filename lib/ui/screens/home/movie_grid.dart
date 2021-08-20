@@ -31,9 +31,9 @@ class MovieGrid extends StatefulWidget {
 }
 
 class _MovieGridState extends State<MovieGrid> {
-  final int maxSize = 200;
+  final double maxSize = 200;
 
-  final int spacing = 16;
+  final double spacing = 16;
 
   late ScrollController _scrollController;
 
@@ -41,11 +41,11 @@ class _MovieGridState extends State<MovieGrid> {
   void initState() {
     _scrollController = ScrollController();
     _scrollController.addListener(() {
-      if (_scrollController.offset >=
-              _scrollController.position.maxScrollExtent &&
+      if (_scrollController.offset >= _scrollController.position.maxScrollExtent &&
           !_scrollController.position.outOfRange &&
           widget.loading != true &&
           widget.onLoadMore != null) {
+        print("Load More");
         widget.onLoadMore!();
       }
     });
@@ -54,74 +54,54 @@ class _MovieGridState extends State<MovieGrid> {
 
   @override
   Widget build(BuildContext context) {
-    List<List<Movie>> chunked = [];
-    Size size = MediaQuery.of(context).size;
-    int width = size.width.toInt();
-    int rowItemsCount = ((width - spacing) / (maxSize + spacing)).ceil();
-    double itemWidth = (width - spacing * (rowItemsCount + 1)) / rowItemsCount;
-    for (var i = 0; i < widget.movies.length; i += rowItemsCount) {
-      var end = (i + rowItemsCount < widget.movies.length)
-          ? i + rowItemsCount
-          : widget.movies.length;
-      chunked.add(widget.movies.sublist(i, end));
-    }
-    int rowCount = chunked.length + 1;
     return Expanded(
-      child: RefreshIndicator(
-        onRefresh: () async {
-          if (widget.onRefresh != null) {
-            widget.onRefresh!();
-          }
-        },
-        child: ListView.builder(
-          controller: _scrollController,
-          itemCount: rowCount,
-          padding: EdgeInsets.only(top: 16),
-          itemBuilder: (context, index) {
-            if (index < rowCount - 1) {
-              List<Movie> rowMovies = chunked[index];
-              List<Widget> movieCards = rowMovies.map<Widget>((movie) {
-                return Container(
-                  width: itemWidth,
-                  padding: EdgeInsets.only(bottom: 16),
-                  child: MovieItem(
-                    movie.title,
-                    movie.getPosterUrl(),
-                    movie.voteAverage ?? 0,
-                    () => widget.openBuilder(movie),
-                    widget.onClosed ?? () {},
-                  ),
-                );
-              }).toList();
-              if (movieCards.length < rowItemsCount) {
-                movieCards.addAll(
-                  List.generate(
-                    rowItemsCount - movieCards.length,
-                    (index) => null,
-                  ).map((element) {
-                    return Container(
-                      width: itemWidth,
-                      padding: EdgeInsets.only(bottom: 16),
-                      child: Container(),
-                    );
-                  }),
-                );
-              }
-              return Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: movieCards,
-              );
-            } else {
-              if (widget.loading ?? false) {
-                return LoadingWidget();
-              } else if (widget.error?.isNotEmpty ?? false) {
-                return ErrorVidget(widget.error ?? "Something went wrong",
-                    () => widget.retry!());
-              }
+      child: Padding(
+        padding: EdgeInsets.all(16),
+        child: RefreshIndicator(
+          onRefresh: () async {
+            if (widget.onRefresh != null) {
+              widget.onRefresh!();
             }
-            return Container();
           },
+          child: CustomScrollView(
+            physics: BouncingScrollPhysics(),
+            controller: _scrollController,
+            slivers: [
+              SliverGrid(
+                delegate: SliverChildBuilderDelegate(
+                  (context, index) {
+                    final movie = widget.movies[index];
+                    return MovieItem(
+                      movie.title,
+                      movie.getPosterUrl(),
+                      movie.voteAverage ?? 0,
+                      () => widget.openBuilder(movie),
+                      widget.onClosed ?? () {},
+                    );
+                  },
+                  childCount: widget.movies.length,
+                ),
+                gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                  maxCrossAxisExtent: maxSize,
+                  crossAxisSpacing: spacing,
+                  mainAxisSpacing: spacing,
+                  childAspectRatio: 0.555,
+                ),
+              ),
+              SliverPadding(
+                padding: EdgeInsets.only(top: 16),
+                sliver: SliverToBoxAdapter(
+                    child: widget.loading ?? false ? LoadingWidget() : SizedBox()),
+              ),
+              SliverPadding(
+                padding: EdgeInsets.only(top: 16),
+                sliver: SliverToBoxAdapter(
+                    child: widget.error?.isNotEmpty ?? false
+                        ? ErrorVidget(widget.error ?? "Something went wrong", () => widget.retry!())
+                        : SizedBox()),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -134,8 +114,7 @@ class MovieItem extends StatelessWidget {
   final double rating;
   final Widget Function() openBuilder;
   final Function onClosed;
-  const MovieItem(
-      this.title, this.posterUrl, this.rating, this.openBuilder, this.onClosed,
+  const MovieItem(this.title, this.posterUrl, this.rating, this.openBuilder, this.onClosed,
       {Key? key})
       : super(key: key);
 

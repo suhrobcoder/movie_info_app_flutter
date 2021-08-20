@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:movie_info_app_flutter/data/model/credits_response.dart';
 import 'package:movie_info_app_flutter/data/model/genre_response.dart';
 import 'package:movie_info_app_flutter/data/model/movie.dart';
@@ -17,16 +18,16 @@ class MovieRepository {
     return await client.getGenres();
   }
 
-  Future<MovieListResponse> getPopularMovies(int page) async {
-    return await client.getPopularMovies(page);
+  Future<MovieListResponse> getPopularMovies(int page, CancelToken cancelToken) async {
+    return await client.getPopularMovies(page, cancelToken);
   }
 
-  Future<MovieListResponse> getTopRatedMovies(int page) async {
-    return await client.getTopRatedMovies(page);
+  Future<MovieListResponse> getTopRatedMovies(int page, CancelToken cancelToken) async {
+    return await client.getTopRatedMovies(page, cancelToken);
   }
 
-  Future<MovieListResponse> getUpcomingMovies(int page) async {
-    return await client.getUpcomingMovies(page);
+  Future<MovieListResponse> getUpcomingMovies(int page, CancelToken cancelToken) async {
+    return await client.getUpcomingMovies(page, cancelToken);
   }
 
   Future<MovieListResponse> searchMovies(String query, int page) async {

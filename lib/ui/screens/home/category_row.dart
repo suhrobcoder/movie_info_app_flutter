@@ -14,8 +14,7 @@ class CategoryRow extends StatelessWidget {
     MovieCategory.TOP_RATED,
     MovieCategory.UPCOMING,
   ];
-  const CategoryRow(this.selectedCategory, this.onCategorySelected, {Key? key})
-      : super(key: key);
+  const CategoryRow(this.selectedCategory, this.onCategorySelected, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -42,8 +41,7 @@ class CategoryItem extends StatelessWidget {
   final String title;
   final bool isSelected;
   final Function onClick;
-  const CategoryItem(this.title, this.isSelected, this.onClick, {Key? key})
-      : super(key: key);
+  const CategoryItem(this.title, this.isSelected, this.onClick, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -56,10 +54,7 @@ class CategoryItem extends StatelessWidget {
           children: [
             Text(
               title,
-              style: Theme.of(context)
-                  .textTheme
-                  .headline5
-                  ?.copyWith(fontWeight: FontWeight.w600),
+              style: Theme.of(context).textTheme.headline5?.copyWith(fontWeight: FontWeight.w600),
             ),
             SizedBox(
               height: 4,
@@ -68,9 +63,7 @@ class CategoryItem extends StatelessWidget {
               width: 42,
               height: 6,
               decoration: BoxDecoration(
-                  color: isSelected
-                      ? Theme.of(context).colorScheme.secondary
-                      : Colors.transparent,
+                  color: isSelected ? Theme.of(context).colorScheme.secondary : Colors.transparent,
                   borderRadius: BorderRadius.circular(3)),
             )
           ],
