@@ -85,13 +85,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.1"
-  cupertino_icons:
-    dependency: "direct main"
-    description:
-      name: cupertino_icons
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.3"
   dio:
     dependency: "direct main"
     description:
@@ -384,13 +377,6 @@ packages:
     dependency: transitive
     description:
       name: shared_preferences_windows
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.0"
-  shimmer:
-    dependency: "direct main"
-    description:
-      name: shimmer
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.0"
