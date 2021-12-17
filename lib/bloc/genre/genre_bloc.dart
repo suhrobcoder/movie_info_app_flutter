@@ -10,29 +10,25 @@ part 'genre_state.dart';
 
 class GenreBloc extends Bloc<GenreEvent, GenreState> {
   final MovieRepository repository;
-  GenreBloc(this.repository) : super(GenreInitial());
 
   final Genre defaultGenre = Genre(-1, "All");
 
-  @override
-  Stream<GenreState> mapEventToState(
-    GenreEvent event,
-  ) async* {
-    if (event is LoadGenresEvent) {
-      yield GenreInitial();
+  GenreBloc(this.repository) : super(GenreInitial()) {
+    on<LoadGenresEvent>((event, emit) async {
+      emit(GenreInitial());
       var genreResponse = await repository.getGenres();
       if (genreResponse.error.isEmpty) {
         var genres = [defaultGenre];
         genres.addAll(genreResponse.genres);
-        yield GenresLoaded(defaultGenre, genres);
+        emit(GenresLoaded(defaultGenre, genres));
       } else {
-        yield GenresLoadError(genreResponse.error);
+        emit(GenresLoadError(genreResponse.error));
       }
-    }
-    if (event is SelectGenreEvent) {
+    });
+    on<SelectGenreEvent>((event, emit) {
       if (state is GenresLoaded) {
-        yield GenresLoaded(event.genre, (state as GenresLoaded).genres);
+        emit(GenresLoaded(event.genre, (state as GenresLoaded).genres));
       }
-    }
+    });
   }
 }

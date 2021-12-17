@@ -12,62 +12,61 @@ part 'movie_state.dart';
 
 class MovieBloc extends Bloc<MovieEvent, MovieState> {
   final MovieRepository repository;
-  MovieBloc(this.repository) : super(const MovieLoadingState([], MovieCategory.POPULAR, 0, -1));
 
   CancelToken? _cancelToken;
 
-  @override
-  Stream<MovieState> mapEventToState(
-    MovieEvent event,
-  ) async* {
-    if (event is LoadMoviesEvent) {
-      yield MovieLoadingState(state.movies, state.category, state.page, state.selectedGenreId);
+  MovieBloc(this.repository)
+      : super(const MovieLoadingState([], MovieCategory.POPULAR, 0, -1)) {
+    on<LoadMoviesEvent>((event, emit) async {
+      emit(MovieLoadingState(
+          state.movies, state.category, state.page, state.selectedGenreId));
       MovieListResponse res = await loadMovies(state.page + 1);
       if (res.error.isEmpty) {
-        var movies = state.movies;
-        movies.addAll(res.results);
-        yield MovieLoadedState(movies, state.category, state.page + 1, state.selectedGenreId);
+        emit(MovieLoadedState(state.movies + res.results, state.category,
+            state.page + 1, state.selectedGenreId));
       } else {
-        yield MovieLoadErrorState(
-            state.movies, state.category, state.page, res.error, state.selectedGenreId);
-      }
-    }
-    if (event is RefreshEvent) {
-      yield MovieLoadingState(const [], state.category, 0, state.selectedGenreId);
-      MovieListResponse res = await loadMovies(1);
-      if (res.error.isEmpty) {
-        var movies = res.results;
-        yield MovieLoadedState(movies, state.category, 1, state.selectedGenreId);
-      } else {
-        yield MovieLoadErrorState(const [], state.category, 0, res.error, state.selectedGenreId);
-      }
-    }
-    if (event is CategorySelectEvent) {
-      yield MovieLoadingState(const [], event.category, 0, state.selectedGenreId);
-      MovieListResponse res = await loadMovies(1);
-      if (res.error.isEmpty) {
-        var movies = res.results;
-        yield MovieLoadedState(movies, event.category, 1, state.selectedGenreId);
-      } else {
-        yield MovieLoadErrorState(const [], event.category, 0, res.error, state.selectedGenreId);
-      }
-    }
-    if (event is GenreSelectedEvent) {
-      yield MovieLoadedState(state.movies, state.category, state.page, event._selectedGenreId);
-    }
-  }
-
-  @override
-  Stream<Transition<MovieEvent, MovieState>> transformEvents(
-    Stream<MovieEvent> events,
-    TransitionFunction<MovieEvent, MovieState> transitionFn,
-  ) {
-    events.listen((event) {
-      if (event is CategorySelectEvent && state is MovieLoadingState) {
-        _cancelToken?.cancel();
+        emit(MovieLoadErrorState(state.movies, state.category, state.page,
+            res.error, state.selectedGenreId));
       }
     });
-    return events.asyncExpand((event) => transitionFn(event));
+
+    on<RefreshEvent>((event, emit) async {
+      emit(MovieLoadingState(
+          const [], state.category, 0, state.selectedGenreId));
+      MovieListResponse res = await loadMovies(1);
+      if (res.error.isEmpty) {
+        var movies = res.results;
+        emit(
+            MovieLoadedState(movies, state.category, 1, state.selectedGenreId));
+      } else {
+        emit(MovieLoadErrorState(
+            const [], state.category, 0, res.error, state.selectedGenreId));
+      }
+    });
+
+    on<CategorySelectEvent>((event, emit) async {
+      emit(MovieLoadingState(
+          const [], event.category, 0, state.selectedGenreId));
+      MovieListResponse res = await loadMovies(1);
+      if (res.error.isEmpty) {
+        var movies = res.results;
+        emit(
+            MovieLoadedState(movies, event.category, 1, state.selectedGenreId));
+      } else {
+        emit(MovieLoadErrorState(
+            const [], event.category, 0, res.error, state.selectedGenreId));
+      }
+    }, transformer: (events, transitionFn) {
+      if (state is MovieLoadingState) {
+        _cancelToken?.cancel();
+      }
+      return events.asyncExpand((event) => transitionFn(event));
+    });
+
+    on<GenreSelectedEvent>((event, emit) {
+      emit(MovieLoadedState(
+          state.movies, state.category, state.page, event._selectedGenreId));
+    });
   }
 
   List<Movie> getFilteredMovies() {
