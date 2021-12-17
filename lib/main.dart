@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:movie_info_app_flutter/service_locator.dart';
@@ -23,6 +24,7 @@ class MyApp extends StatelessWidget {
       ),
     );
     return MaterialApp(
+      scrollBehavior: const CupertinoScrollBehavior(),
       title: 'Movie Info App',
       debugShowCheckedModeBanner: false,
       theme: appTheme,

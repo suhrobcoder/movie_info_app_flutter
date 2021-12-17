@@ -37,7 +37,9 @@ class ReviewItem extends StatelessWidget {
       decoration: BoxDecoration(
         color: backgroundColor,
         borderRadius: BorderRadius.circular(8),
-        boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 10, spreadRadius: 4)],
+        boxShadow: const [
+          BoxShadow(color: Colors.black12, blurRadius: 10, spreadRadius: 4)
+        ],
       ),
       child: Column(
         children: [
@@ -63,13 +65,18 @@ class ReviewItem extends StatelessWidget {
               const SizedBox(
                 width: 8,
               ),
-              Text(
-                review.author,
-                style: Theme.of(context).textTheme.headline6,
+              Expanded(
+                child: Text(
+                  review.author,
+                  style: Theme.of(context).textTheme.headline6,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
               const Spacer(),
               RatingBarIndicator(
-                itemBuilder: (_, __) => const Icon(Icons.star, color: Colors.yellow),
+                itemBuilder: (_, __) =>
+                    const Icon(Icons.star, color: Colors.yellow),
                 rating: (review.authorDetails.rating ?? 0) / 2,
                 itemSize: 24,
               )
