@@ -11,19 +11,19 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  dio: ^4.0.0
-  shared_preferences: ^2.0.6
-  sqflite: ^2.0.0+3
-  path_provider: ^2.0.2
-  flutter_bloc: ^7.0.1
-  cupertino_icons: ^1.0.2
-  cached_network_image: ^3.0.0
+  dio: ^4.0.4
+  shared_preferences: ^2.0.11
+  sqflite: ^2.0.1
+  path_provider: ^2.0.8
+  flutter_bloc: ^7.3.3
+  cupertino_icons: ^1.0.3
+  cached_network_image: ^3.2.0
   shimmer: ^2.0.0
-  like_button: ^2.0.2
-  url_launcher: ^6.0.9
-  animations: ^2.0.0
+  like_button: ^2.0.4
+  url_launcher: ^6.0.17
+  animations: ^2.0.2
   flutter_rating_bar: ^4.0.0
-  get_it: 7.1.0
+  get_it: 7.2.0
 
 dev_dependencies:
   flutter_test:
@@ -41,10 +41,10 @@ flutter:
   fonts:
     - family: SFPro
       fonts:
-        - asset: assets\font\sf_pro_regular.ttf
-        - asset: assets\font\sf_pro_medium.ttf
+        - asset: assets/font/sf_pro_regular.ttf
+        - asset: assets/font/sf_pro_medium.ttf
           weight: 500
-        - asset: assets\font\sf_pro_semibold.ttf
+        - asset: assets/font/sf_pro_semibold.ttf
           weight: 600
-        - asset: assets\font\sf_pro_bold.ttf
+        - asset: assets/font/sf_pro_bold.ttf
           weight: 700
