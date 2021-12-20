@@ -12,7 +12,7 @@ import 'package:movie_info_app_flutter/data/repository/saved_movies_repository.d
 import 'package:movie_info_app_flutter/service_locator.dart';
 import 'package:movie_info_app_flutter/ui/components/loading_widget.dart';
 import 'package:movie_info_app_flutter/ui/screens/details/reviews_screen.dart';
-import 'package:movie_info_app_flutter/ui/screens/details/videos_column.dart';
+import 'package:movie_info_app_flutter/ui/screens/details/videos_pager.dart';
 import 'package:movie_info_app_flutter/ui/screens/home/genre_row.dart';
 import 'package:movie_info_app_flutter/ui/theme/colors.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -27,10 +27,11 @@ class DetailsScreen extends StatefulWidget {
   static Widget screen(Movie movie) => MultiBlocProvider(
         providers: [
           BlocProvider<DetailsBloc>(
-              create: (_) => DetailsBloc(
-                  movie, locator.get<MovieRepository>(), locator.get<SavedMoviesRepository>())),
+              create: (_) => DetailsBloc(movie, locator.get<MovieRepository>(),
+                  locator.get<SavedMoviesRepository>())),
           BlocProvider<RateCubit>(
-              create: (_) => RateCubit(locator.get<MovieRepository>(), movie.id))
+              create: (_) =>
+                  RateCubit(locator.get<MovieRepository>(), movie.id))
         ],
         child: DetailsScreen(movie),
       );
@@ -50,7 +51,8 @@ class _DetailsScreenState extends State<DetailsScreen> {
   void initState() {
     detailsBloc = BlocProvider.of<DetailsBloc>(context);
     rateCubit = BlocProvider.of<RateCubit>(context);
-    movieLikeBloc = MovieLikeBloc(locator.get<SavedMoviesRepository>(), widget.movie.id);
+    movieLikeBloc =
+        MovieLikeBloc(locator.get<SavedMoviesRepository>(), widget.movie.id);
     detailsBloc.add(DetailsLoadEvent());
     super.initState();
   }
@@ -81,7 +83,8 @@ class _DetailsScreenState extends State<DetailsScreen> {
                         Padding(
                           padding: const EdgeInsets.only(bottom: 32),
                           child: ClipRRect(
-                            borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(32)),
+                            borderRadius: const BorderRadius.only(
+                                bottomLeft: Radius.circular(32)),
                             child: CachedNetworkImage(
                               width: double.infinity,
                               fit: BoxFit.fill,
@@ -121,7 +124,8 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                   const Icon(Icons.star, color: Colors.yellow),
                                   RichText(
                                     text: TextSpan(
-                                      style: const TextStyle(color: Colors.black),
+                                      style:
+                                          const TextStyle(color: Colors.black),
                                       children: [
                                         TextSpan(
                                           text: "${movie.voteAverage}/",
@@ -142,14 +146,15 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                     ),
                                   ),
                                   Text("${movie.voteCount}",
-                                      style: Theme.of(context).textTheme.caption),
+                                      style:
+                                          Theme.of(context).textTheme.caption),
                                 ],
                               )),
                               BlocListener<RateCubit, RateState>(
                                 listener: (context, state) {
                                   if (state is RateCompleted) {
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(SnackBar(content: Text(state.message)));
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(content: Text(state.message)));
                                   }
                                 },
                                 child: Expanded(
@@ -161,7 +166,8 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                         builder: (_) => _rateDialog(
                                           context,
                                           (_rating) {
-                                            rateCubit.rateMovie((_rating * 2).toInt());
+                                            rateCubit.rateMovie(
+                                                (_rating * 2).toInt());
                                             Navigator.pop(context);
                                           },
                                         ),
@@ -187,18 +193,23 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                     builder: (_, snapshot) => AbsorbPointer(
                                       absorbing: state is DetailsInitialState,
                                       child: LikeButton(
-                                        isLiked: snapshot.hasData ? snapshot.data as bool : false,
+                                        isLiked: snapshot.hasData
+                                            ? snapshot.data as bool
+                                            : false,
                                         size: 48,
                                         likeBuilder: (bool isLiked) {
                                           return Icon(
                                             Icons.favorite,
-                                            color: isLiked ? Colors.redAccent : Colors.grey,
+                                            color: isLiked
+                                                ? Colors.redAccent
+                                                : Colors.grey,
                                             size: 48,
                                           );
                                         },
                                         onTap: (liked) async {
                                           if (!liked) {
-                                            return movieLikeBloc.likeMovie(movie);
+                                            return movieLikeBloc
+                                                .likeMovie(movie);
                                           } else {
                                             return movieLikeBloc.dislikeMovie();
                                           }
@@ -214,13 +225,15 @@ class _DetailsScreenState extends State<DetailsScreen> {
                       ],
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(left: 16, right: 16, top: 24, bottom: 8),
+                      padding: const EdgeInsets.only(
+                          left: 16, right: 16, top: 24, bottom: 8),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             movie.title,
-                            style: const TextStyle(fontSize: 32, fontWeight: FontWeight.w600),
+                            style: const TextStyle(
+                                fontSize: 32, fontWeight: FontWeight.w600),
                           ),
                           Row(
                             children: [
@@ -256,23 +269,31 @@ class _DetailsScreenState extends State<DetailsScreen> {
                         ? Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              state.casts != null && (state.casts?.isNotEmpty ?? false)
+                              state.casts != null &&
+                                      (state.casts?.isNotEmpty ?? false)
                                   ? CastRow(state.casts ?? [])
                                   : const SizedBox(),
-                              state.videos != null && (state.videos?.isNotEmpty ?? false)
-                                  ? VideosColumn(state.videos, _launchUrl)
+                              state.videos != null &&
+                                      (state.videos?.isNotEmpty ?? false)
+                                  ? VideosPager(videos: state.videos)
                                   : const SizedBox(),
-                              state.reviews != null && (state.reviews?.isNotEmpty ?? false)
+                              state.reviews != null &&
+                                      (state.reviews?.isNotEmpty ?? false)
                                   ? ListTile(
                                       title: Text(
                                         "Reviews",
-                                        style: Theme.of(context).textTheme.headline5,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline5,
                                       ),
-                                      trailing: const Icon(Icons.keyboard_arrow_right),
+                                      trailing: const Icon(
+                                          Icons.keyboard_arrow_right),
                                       onTap: () => Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                              builder: (context) => ReviewsScreen(state.reviews!))),
+                                              builder: (context) =>
+                                                  ReviewsScreen(
+                                                      state.reviews!))),
                                     )
                                   : const SizedBox(),
                             ],
@@ -310,7 +331,8 @@ class _DetailsScreenState extends State<DetailsScreen> {
     return AlertDialog(
       title: const Text("Rate"),
       content: RatingBar.builder(
-        itemBuilder: (context, _) => const Icon(Icons.star, color: Colors.yellow),
+        itemBuilder: (context, _) =>
+            const Icon(Icons.star, color: Colors.yellow),
         onRatingUpdate: (newRating) => rating = newRating,
         initialRating: rating,
         glow: false,

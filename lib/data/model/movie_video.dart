@@ -17,4 +17,8 @@ class MovieVideo {
   String getYoutubeUrl() {
     return "https://youtu.be/$key";
   }
+
+  bool isTrailerOrTeaser() {
+    return type == "Trailer" || type == "Teaser";
+  }
 }

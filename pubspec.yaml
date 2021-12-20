@@ -24,6 +24,7 @@ dependencies:
   animations: ^2.0.2
   flutter_rating_bar: ^4.0.0
   get_it: 7.2.0
+  youtube_player_flutter: ^8.0.0
 
 dev_dependencies:
   flutter_test:

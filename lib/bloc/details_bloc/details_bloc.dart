@@ -37,7 +37,9 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
       List<Cast>? casts = result[0];
       List<MovieReview>? reviews = result[1];
       List<MovieVideo>? videos = result[2];
-      emit(DetailsLoadedState(loadedMovie, casts, reviews, videos));
+      videos = videos?.reversed.toList();
+      emit(DetailsLoadedState(loadedMovie, casts, reviews,
+          videos?.where((element) => element.isTrailerOrTeaser()).toList()));
     });
   }
 
