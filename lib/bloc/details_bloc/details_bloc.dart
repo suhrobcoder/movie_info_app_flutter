@@ -20,13 +20,8 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
   final MovieRepository repository;
   final SavedMoviesRepository savedRepository;
   DetailsBloc(this.movie, this.repository, this.savedRepository)
-      : super(DetailsInitialState(movie));
-
-  @override
-  Stream<DetailsState> mapEventToState(
-    DetailsEvent event,
-  ) async* {
-    if (event is DetailsLoadEvent) {
+      : super(DetailsInitialState(movie)) {
+    on<DetailsLoadEvent>((event, emit) async {
       Movie loadedMovie = movie;
       Movie? movieFromDb = await savedRepository.getMovieById(movie.id);
       if (movieFromDb == null) {
@@ -37,11 +32,13 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
       } else {
         loadedMovie = movieFromDb;
       }
-      List<Cast>? casts = await getCasts();
-      List<MovieReview>? reviews = await getReviews();
-      List<MovieVideo>? videos = await getMovieVideos();
-      yield DetailsLoadedState(loadedMovie, casts, reviews, videos);
-    }
+      List result =
+          await Future.wait([getCasts(), getReviews(), getMovieVideos()]);
+      List<Cast>? casts = result[0];
+      List<MovieReview>? reviews = result[1];
+      List<MovieVideo>? videos = result[2];
+      emit(DetailsLoadedState(loadedMovie, casts, reviews, videos));
+    });
   }
 
   Future<List<Cast>?> getCasts() async {

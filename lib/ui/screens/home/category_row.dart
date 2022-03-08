@@ -14,13 +14,14 @@ class CategoryRow extends StatelessWidget {
     MovieCategory.TOP_RATED,
     MovieCategory.UPCOMING,
   ];
-  const CategoryRow(this.selectedCategory, this.onCategorySelected, {Key? key}) : super(key: key);
+  const CategoryRow(this.selectedCategory, this.onCategorySelected, {Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       height: 50,
-      padding: const EdgeInsets.only(top: 8),
+      padding: const EdgeInsets.only(top: 8, left: 6, right: 6),
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: categories.length,
@@ -41,7 +42,8 @@ class CategoryItem extends StatelessWidget {
   final String title;
   final bool isSelected;
   final Function onClick;
-  const CategoryItem(this.title, this.isSelected, this.onClick, {Key? key}) : super(key: key);
+  const CategoryItem(this.title, this.isSelected, this.onClick, {Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -54,14 +56,19 @@ class CategoryItem extends StatelessWidget {
           children: [
             Text(
               title,
-              style: Theme.of(context).textTheme.headline5?.copyWith(fontWeight: FontWeight.w600),
+              style: Theme.of(context)
+                  .textTheme
+                  .headline5
+                  ?.copyWith(fontWeight: FontWeight.w600),
             ),
             const SizedBox(height: 4),
             Container(
               width: 42,
               height: 6,
               decoration: BoxDecoration(
-                  color: isSelected ? Theme.of(context).colorScheme.secondary : Colors.transparent,
+                  color: isSelected
+                      ? Theme.of(context).colorScheme.secondary
+                      : Colors.transparent,
                   borderRadius: BorderRadius.circular(3)),
             )
           ],

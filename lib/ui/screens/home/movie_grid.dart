@@ -41,7 +41,8 @@ class _MovieGridState extends State<MovieGrid> {
   void initState() {
     _scrollController = ScrollController();
     _scrollController.addListener(() {
-      if (_scrollController.offset >= _scrollController.position.maxScrollExtent &&
+      if (_scrollController.offset >=
+              _scrollController.position.maxScrollExtent &&
           !_scrollController.position.outOfRange &&
           widget.loading != true &&
           widget.onLoadMore != null) {
@@ -55,7 +56,7 @@ class _MovieGridState extends State<MovieGrid> {
   Widget build(BuildContext context) {
     return Expanded(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         child: RefreshIndicator(
           onRefresh: () async {
             if (widget.onRefresh != null) {
@@ -63,9 +64,11 @@ class _MovieGridState extends State<MovieGrid> {
             }
           },
           child: CustomScrollView(
-            physics: const BouncingScrollPhysics(),
             controller: _scrollController,
             slivers: [
+              const SliverToBoxAdapter(
+                child: SizedBox(height: 16),
+              ),
               SliverGrid(
                 delegate: SliverChildBuilderDelegate(
                   (context, index) {
@@ -90,13 +93,16 @@ class _MovieGridState extends State<MovieGrid> {
               SliverPadding(
                 padding: const EdgeInsets.only(top: 16),
                 sliver: SliverToBoxAdapter(
-                    child: widget.loading ?? false ? const LoadingWidget() : const SizedBox()),
+                    child: widget.loading ?? false
+                        ? const LoadingWidget()
+                        : const SizedBox()),
               ),
               SliverPadding(
                 padding: const EdgeInsets.only(top: 16),
                 sliver: SliverToBoxAdapter(
                     child: widget.error?.isNotEmpty ?? false
-                        ? ErrorVidget(widget.error ?? "Something went wrong", () => widget.retry!())
+                        ? ErrorVidget(widget.error ?? "Something went wrong",
+                            () => widget.retry!())
                         : const SizedBox()),
               ),
             ],
@@ -113,7 +119,8 @@ class MovieItem extends StatelessWidget {
   final double rating;
   final Widget Function() openBuilder;
   final Function onClosed;
-  const MovieItem(this.title, this.posterUrl, this.rating, this.openBuilder, this.onClosed,
+  const MovieItem(
+      this.title, this.posterUrl, this.rating, this.openBuilder, this.onClosed,
       {Key? key})
       : super(key: key);
 

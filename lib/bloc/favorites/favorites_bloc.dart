@@ -10,16 +10,11 @@ part 'favorites_state.dart';
 
 class FavoritesBloc extends Bloc<FavoritesEvent, FavoritesState> {
   final SavedMoviesRepository repository;
-  FavoritesBloc(this.repository) : super(FavoritesLoading());
-
-  @override
-  Stream<FavoritesState> mapEventToState(
-    FavoritesEvent event,
-  ) async* {
-    if (event is LoadFavorites) {
-      yield FavoritesLoading();
+  FavoritesBloc(this.repository) : super(FavoritesLoading()) {
+    on<LoadFavorites>((event, emit) async {
+      emit(FavoritesLoading());
       List<Movie> movies = await repository.getAllMovies();
-      yield FavoritesLoaded(movies);
-    }
+      emit(FavoritesLoaded(movies));
+    });
   }
 }

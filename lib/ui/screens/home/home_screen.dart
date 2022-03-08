@@ -17,8 +17,10 @@ import 'movie_grid.dart';
 class HomeScreen extends StatefulWidget {
   static Widget screen() => MultiBlocProvider(
         providers: [
-          BlocProvider<MovieBloc>(create: (_) => MovieBloc(locator.get<MovieRepository>())),
-          BlocProvider<GenreBloc>(create: (_) => GenreBloc(locator.get<MovieRepository>())),
+          BlocProvider<MovieBloc>(
+              create: (_) => MovieBloc(locator.get<MovieRepository>())),
+          BlocProvider<GenreBloc>(
+              create: (_) => GenreBloc(locator.get<MovieRepository>())),
         ],
         child: const HomeScreen(),
       );
@@ -29,7 +31,8 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
+class _HomeScreenState extends State<HomeScreen>
+    with SingleTickerProviderStateMixin {
   late MovieBloc movieBloc;
   late GenreBloc genreBloc;
 
@@ -83,6 +86,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 onTap: animationController.isCompleted ? () => toggle() : null,
                 child: Stack(
                   children: [
+                    Positioned.fill(
+                        child: Container(color: Colors.transparent)),
                     Transform.translate(
                       offset: Offset(slide - maxSlide, 0),
                       child: Transform(
@@ -104,7 +109,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                       ),
                     ),
                     Transform.translate(
-                      offset: Offset((width - 64) * animationController.value, 0),
+                      offset:
+                          Offset((width - 64) * animationController.value, 0),
                       child: HomeAppBar(onMenuClick: toggle),
                     ),
                   ],
@@ -116,7 +122,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   }
 
   void toggle() {
-    animationController.isDismissed ? animationController.forward() : animationController.reverse();
+    animationController.isDismissed
+        ? animationController.forward()
+        : animationController.reverse();
   }
 
   void open() {
@@ -128,10 +136,10 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   }
 
   void _onDragStart(DragStartDetails details) {
-    bool isDragOpenFromLeft =
-        animationController.isDismissed && details.globalPosition.dx < minDragStartEdge;
-    bool isDragCloseFromRight =
-        animationController.isCompleted && details.globalPosition.dx > minDragStartEdge;
+    bool isDragOpenFromLeft = animationController.isDismissed &&
+        details.globalPosition.dx < minDragStartEdge;
+    bool isDragCloseFromRight = animationController.isCompleted &&
+        details.globalPosition.dx > minDragStartEdge;
     _canBeDragged = isDragOpenFromLeft || isDragCloseFromRight;
   }
 
@@ -147,8 +155,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       return;
     }
     if (details.velocity.pixelsPerSecond.dx.abs() > 365.0) {
-      double visualVelocity =
-          details.velocity.pixelsPerSecond.dx / MediaQuery.of(context).size.width;
+      double visualVelocity = details.velocity.pixelsPerSecond.dx /
+          MediaQuery.of(context).size.width;
       animationController.fling(velocity: visualVelocity);
     } else if (animationController.value < 0.5) {
       close();
@@ -182,7 +190,8 @@ class HomeAppBar extends StatelessWidget {
         }),
         actions: [
           IconButton(
-              onPressed: () => Navigator.push(context, MySlideTransition(SearchScreen.screen())),
+              onPressed: () => Navigator.push(
+                  context, MySlideTransition(SearchScreen.screen())),
               icon: const Icon(Icons.search)),
         ],
       ),
@@ -283,8 +292,10 @@ class HomeDrawer extends StatelessWidget {
                 ),
                 Text(
                   "Movie Info App",
-                  style:
-                      Theme.of(context).textTheme.headline5?.copyWith(fontWeight: FontWeight.w500),
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline5
+                      ?.copyWith(fontWeight: FontWeight.w500),
                 ),
               ],
             ),
@@ -292,7 +303,8 @@ class HomeDrawer extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.search),
             title: const Text("Search"),
-            onTap: () => Navigator.push(context, MySlideTransition(SearchScreen.screen())),
+            onTap: () => Navigator.push(
+                context, MySlideTransition(SearchScreen.screen())),
           ),
           ListTile(
             leading: const Icon(Icons.favorite),
